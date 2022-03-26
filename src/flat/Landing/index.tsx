@@ -64,14 +64,14 @@ function Story() {
         </Text>
       </Container>
       <Container display="flex" style={{ marginTop: "50px", maxWidth:"800px" }}>
-        <Text>
+        <Text >
           About 90% of startups fail. What about projects that never kicked off,
           the project that a developer started sometime somewhere but never put
           on display? They all currently live on github graveyards. Does that
           mean they should stay on graveyards?
           <Text b> No.</Text>
         </Text>
-        <Text css={{ marginTop: "30px" }}>
+        <Text css={{ marginTop: "30px"}}>
           Most startup founders are developers and what’s the most common
           misconception tech founders have?{" "}
           <Text i>
@@ -81,7 +81,7 @@ function Story() {
           42% of startups fail due to misreading market demand and this mindset
           is a vital cause for this rate. But what if we could save these ideas
           through small pivots? Just look at the{" "}
-          <Link css={{ borderBottom: "2px solid",fontWeight:"400" }} > Slack story.</Link>
+          <Link underline= "true" color="text" css={{ textDecoration:"underline",fontWeight:"400" }} > Slack story.</Link>
         </Text>
       </Container>
     </Container>
@@ -93,8 +93,7 @@ function Vision() {
     <Container
       alignItems="center"
       justify="center"
-      css={{  marginTop: "100px",paddingBottom:"100px" }}
-
+      css={{ marginTop: "200px", paddingBottom: "100px" }}
     >
       <Container display="flex">
         <Text
@@ -107,8 +106,8 @@ function Vision() {
           The vision
         </Text>
       </Container>
-      <Container display="flex" css={{ marginTop: "50px", maxWidth:"820px" }}>
-        <Text>
+      <Container display="flex" css={{ marginTop: "50px", maxWidth: "820px" }}>
+        <Text >
           What does that leave us with?
           <Text b>
             {" "}
@@ -116,7 +115,7 @@ function Vision() {
             pivots by smart people.
           </Text>
         </Text>
-        <Text>
+        <Text >
           <Text b>
             {" "}
             Our vision is to help tech founders not linger on MVPs that are in a
