@@ -1,4 +1,4 @@
-import { Container, Col, Row, Text, Image } from "@nextui-org/react";
+import { Container, Col, Row, Text, Image, Link } from "@nextui-org/react";
 import { url } from "inspector";
 
 function Landing() {
@@ -50,7 +50,7 @@ function Story() {
     <Container
       alignItems="center"
       justify="center"
-      css={{ height: "100vh", marginTop: "100px" }}
+      css={{ marginTop: "100px" }}
     >
       <Container display="flex">
         <Text
@@ -63,26 +63,26 @@ function Story() {
           The story
         </Text>
       </Container>
-      <Container display="flex" css={{ marginTop: "100px", width: "50%" }}>
-        <p>
+      <Container display="flex" style={{ marginTop: "50px", maxWidth:"800px" }}>
+        <Text>
           About 90% of startups fail. What about projects that never kicked off,
           the project that a developer started sometime somewhere but never put
           on display? They all currently live on github graveyards. Does that
           mean they should stay on graveyards?
-          <b> No.</b>
-        </p>
-        <p style={{ marginTop: "30px" }}>
+          <Text b> No.</Text>
+        </Text>
+        <Text css={{ marginTop: "30px" }}>
           Most startup founders are developers and what’s the most common
           misconception tech founders have?{" "}
-          <span style={{ fontStyle: "italic" }}>
+          <Text i>
             {" "}
             If you build it they will come.
-          </span>{" "}
+          </Text>{" "}
           42% of startups fail due to misreading market demand and this mindset
           is a vital cause for this rate. But what if we could save these ideas
           through small pivots? Just look at the{" "}
-          <span style={{ borderBottom: "2px solid" }}> Slack story.</span>
-        </p>
+          <Link css={{ borderBottom: "2px solid",fontWeight:"400" }} > Slack story.</Link>
+        </Text>
       </Container>
     </Container>
   );
@@ -93,7 +93,8 @@ function Vision() {
     <Container
       alignItems="center"
       justify="center"
-      css={{ height: "100vh", marginTop: "100px" }}
+      css={{  marginTop: "100px",paddingBottom:"100px" }}
+
     >
       <Container display="flex">
         <Text
@@ -106,28 +107,28 @@ function Vision() {
           The vision
         </Text>
       </Container>
-      <Container display="flex" css={{ marginTop: "100px", width: "50%" }}>
-        <p>
+      <Container display="flex" css={{ marginTop: "50px", maxWidth:"820px" }}>
+        <Text>
           What does that leave us with?
-          <b>
+          <Text b>
             {" "}
             The rest 90% of startups with the potential to bloom through simple
             pivots by smart people.
-          </b>
-        </p>
-        <p>
-          <b>
+          </Text>
+        </Text>
+        <Text>
+          <Text b>
             {" "}
             Our vision is to help tech founders not linger on MVPs that are in a
             state of coma.
-          </b>
-        </p>
-        <p>
-          <b>
+          </Text>
+        </Text>
+        <Text>
+          <Text b>
             Our vision is to help business founders find low cost opportunities,
             high quality MVPs with unicorn potential.
-          </b>
-        </p>
+          </Text>
+        </Text>
       </Container>
     </Container>
   );
