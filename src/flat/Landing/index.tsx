@@ -4,72 +4,86 @@ import { url } from "inspector";
 function Landing() {
   return (
     <>
-      <Container
-        fluid
-        css={{
-          minHeight: "100vh",
-          "@sm": {
-            flexWrap: "nowrap",
-          },
-        }}
-        alignItems="center"
-        justify="center"
-        display="flex"
-      >
-        <Col
+      <div style={{position: 'relative'}}>
+        <Container
+          fluid
           css={{
-            height: "100%",
-            width: '100%',
-            "@xs": {
-              width: "30%",
+            padding: 0,
+            height: "100vh",
+            flexFlow: "column",
+            "@sm": {
+              flexWrap: "nowrap",
+              flexFlow: "row",
             },
+            "@md": {},
           }}
+          alignItems="center"
+          justify="center"
+          display="flex"
         >
-          <Container
-            css={{ height: "100%" }}
-            justify="center"
-            alignItems="center"
-            display="flex"
+          <Col
+            css={{
+              height: "100%",
+              width: "100%",
+              "@md": {
+                minWidth: 400,
+                width: "40%",
+              },
+            }}
           >
-            <Text
-              h1
+            <Container
               css={{
-                // textGradient: "45deg, $blue500 -20%, $pink500 50%",
-                maxWidth: "500px",
-                minWidth: "400px",
-                lineHeight: 1,
-                fontSize: 40,
-                "@xs": {
-                  fontSize: 90,
-                },
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
               }}
             >
-              Buy high quality pre-revenue{" "}
               <Text
-                color="#2A21E5"
                 h1
                 css={{
+                  // textGradient: "45deg, $blue500 -20%, $pink500 50%",
+                  maxWidth: "600px",
                   lineHeight: 1,
                   fontSize: 40,
                   "@xs": {
-                    fontSize: 90,
+                    fontSize: 50,
+                  },
+                  "@md": {
+                    fontSize: 70,
                   },
                 }}
               >
-                MVPs
+                Buy pre-revenue high quality{" "}
+                <Text
+                  color="#2A21E5"
+                  span
+                  css={{
+                    lineHeight: 1,
+                    fontSize: 40,
+                    "@xs": {
+                      fontSize: 50,
+                    },
+                    "@md": {
+                      fontSize: 70,
+                    },
+                  }}
+                >
+                  MVPs
+                </Text>
               </Text>
-            </Text>
-          </Container>
-        </Col>
-        <Col css={{ minHeight: "100vh", width: "100%" }}>
-          <Image
-            height="100vh"
-            width="100%"
-            objectFit="cover"
-            src="/illustration.png"
-          />
-        </Col>
-      </Container>
+            </Container>
+          </Col>
+          <Col css={{width: '60%'}}/>
+        </Container>
+        <Image
+        width="100vw"
+        height="100vh"
+        src="/bg.png"
+        containerCss={{position: "absolute", top: 0, left: 0}}
+      />
+      </div>
+
       <Story />
       <Vision />
     </>
@@ -78,26 +92,26 @@ function Landing() {
 
 function Story() {
   return (
-    <Container
-      alignItems="center"
-      justify="center"
-      css={{ marginTop: "100px" }}
+    <div
+      style={{
+        marginTop: "100px",
+        display: "flex",
+        flexFlow: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <Container display="flex">
+      <div>
         <Text
           css={{
             fontSize: "85px",
             fontWeight: "800",
-            letterSpacing: "0.02em",
           }}
         >
           The story
         </Text>
-      </Container>
-      <Container
-        display="flex"
-        style={{ marginTop: "50px", maxWidth: "800px" }}
-      >
+      </div>
+      <div style={{ marginTop: "50px", maxWidth: "800px" }}>
         <Text>
           About 90% of startups fail. What about projects that never kicked off,
           the project that a developer started sometime somewhere but never put
@@ -121,8 +135,8 @@ function Story() {
             Slack story.
           </Link>
         </Text>
-      </Container>
-    </Container>
+      </div>
+    </div>
   );
 }
 
@@ -138,7 +152,6 @@ function Vision() {
           css={{
             fontSize: "85px",
             fontWeight: "800",
-            letterSpacing: "0.02em",
           }}
         >
           The vision
