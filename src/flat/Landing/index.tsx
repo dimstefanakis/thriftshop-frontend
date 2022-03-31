@@ -1,5 +1,6 @@
 import { Container, Col, Row, Text, Image, Link } from "@nextui-org/react";
 import Header from "../Header";
+import SubscribeToNewsletter from "../../features/SubscribeToNewsletter";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { ParagraphProps } from "./interface";
 
@@ -40,7 +41,6 @@ function Landing() {
           >
             <Container
               css={{
-                height: "100%",
                 display: "flex",
                 paddingTop: 120,
                 paddingLeft: '$9',
@@ -86,6 +86,7 @@ function Landing() {
                   MVPs
                 </Text>
               </Text>
+              <SubscribeToNewsletter/>
             </Container>
           </Col>
           <Col css={{ width: "60%" }} />
@@ -137,9 +138,10 @@ function Story() {
           <Link
             underline="true"
             color="text"
+            href="https://bamf.com/slack-story-how-pivoting-led-to-a-27-billion-acquisition/"
+            target="_blank"
             css={{ textDecoration: "underline", fontWeight: "400" }}
           >
-            {" "}
             Slack story.
           </Link>
         </ParagraphContainer>
