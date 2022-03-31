@@ -1,6 +1,7 @@
 import { Container, Col, Row, Text, Image, Link } from "@nextui-org/react";
-import { ParagraphProps } from "./interface";
+import Header from "../Header";
 import useMediaQuery from "../../hooks/useMediaQuery";
+import { ParagraphProps } from "./interface";
 
 function Landing() {
   const isMobile = useMediaQuery("(max-width: 480px)");
@@ -8,6 +9,7 @@ function Landing() {
 
   return (
     <>
+      <Header />
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <Container
           fluid
@@ -39,16 +41,23 @@ function Landing() {
             <Container
               css={{
                 height: "100%",
-                justifyContent: "center",
-                alignItems: "center",
                 display: "flex",
+                paddingTop: 120,
+                paddingLeft: '$9',
+                paddingRight: '$9',
+                '@sm': {
+                  paddingLeft: '$20',
+                  paddingRight: '$20',
+                  paddingTop: 200
+                }
               }}
             >
               <Text
                 h1
                 css={{
                   // textGradient: "45deg, $blue500 -20%, $pink500 50%",
-                  maxWidth: "600px",
+                  maxWidth: "400px",
+                  margin: 0,
                   lineHeight: 1,
                   fontSize: 40,
                   "@xs": {
