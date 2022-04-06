@@ -7,6 +7,7 @@ import {
   Link,
   Checkbox,
 } from "@nextui-org/react";
+import { fail } from "assert";
 import { useEffect, useState } from "react";
 import JSONFILTERS from "../src/filter.json";
 
@@ -27,13 +28,22 @@ function Mvp() {
 
 function Filt() {
   const [filter, setFilter] = useState(JSONFILTERS);
+  // const handleClick = (e) => {
+  //   setFilter({ ...filter.failures, checked: e.target.checked });
+  //   console.log(filter);
+  // };
 
-  useEffect(() => {
-    console.log(JSON.parse(JSON.stringify(filter)));
-    
-  }, [filter]);
+useEffect(() => {
+  console.log(filter);
+  
+
+  
+}, [filter])
+
+
 
   return (
+    
     <>
       <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
         <Text css={{ fontWeight: "500", fontSize: 25 }}>Failure reasons</Text>
@@ -48,12 +58,15 @@ function Filt() {
         }}
       >
         {JSONFILTERS.failures.map((failure, i) => {
+          
           return (
             <Checkbox
-              checked={false}
+              checked={failure.checked}
               size="sm"
               key={i}
-              onChange={() => setFilter(!failure.checked)}
+              onChange={(e) =>
+                setFilter(filter=>({ ...filter,failures:{...filter.failures,[i]:{...filter.failures[i],checked: e.target.checked }}}))
+              }
             >
               <Text css={{ fontSize: 20, color: "#9B9B9B" }}>
                 {failure.name}
@@ -77,10 +90,18 @@ function Filt() {
         {JSONFILTERS.cloud_type.map((cloud, i) => {
           return (
             <Checkbox
-              checked={false}
+              checked={cloud.checked}
               size="sm"
               key={i}
-              onChange={() => setFilter(!cloud.checked)}
+              onChange={(e) =>
+                setFilter((filter) => ({
+                  ...filter,
+                  cloud_type: {
+                    ...filter.cloud_type,
+                    [i]: { ...filter.cloud_type[i], checked: e.target.checked },
+                  },
+                }))
+              }
             >
               <Text css={{ fontSize: 20, color: "#9B9B9B" }}>{cloud.name}</Text>
             </Checkbox>
@@ -102,10 +123,18 @@ function Filt() {
         {JSONFILTERS.industry.map((industry, i) => {
           return (
             <Checkbox
-              checked={false}
+              checked={industry.checked}
               size="sm"
               key={i}
-              onChange={() => setFilter(!industry.checked)}
+              onChange={(e) =>
+                setFilter((filter) => ({
+                  ...filter,
+                  industry: {
+                    ...filter.industry,
+                    [i]: { ...filter.industry[i], checked: e.target.checked },
+                  },
+                }))
+              }
             >
               <Text css={{ fontSize: 20, color: "#9B9B9B" }}>
                 {industry.name}
