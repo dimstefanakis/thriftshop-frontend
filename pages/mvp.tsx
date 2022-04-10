@@ -95,14 +95,16 @@ function Industry() {
 
 function JSONMAP({type}:any) {
   const [filter, setFilter] = useState(NEWJSON);
-  console.log(filter);
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
   return (
     <>
-      {filter.map((filters, i) => {
+      {NEWJSON.map((filters, i) => {
         if (type==filters.type){
 
           return (
-            <Checkbox checked={filters.checked} size="sm" key={i}>
+            <Checkbox checked={filters.checked} size="sm" key={i} onChange={(e)=>setFilter(filter=>({...filter,[i]:{...filter[i],checked:e.target.checked}}))}>
             {filters.name}
           </Checkbox>
         );
