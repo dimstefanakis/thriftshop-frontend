@@ -22,11 +22,14 @@ function Mvp() {
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
       <Filter />
+      <Cloud />
+      <Industry />
     </>
   );
 }
 
 function Filter() {
+
   return (
     <>
       <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
@@ -41,29 +44,69 @@ function Filter() {
           width: "fit-content",
         }}
       >
-        {<JSONMAP />?}  
+        <JSONMAP type="fail"/>
       </Container>
     </>
   );
 }
 
-function JSONMAP() {
-  const [filter, setFilter] = useState(NEWJSON);
-  console.log(filter);
+function Cloud() {
 
   return (
     <>
+      <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
+        <Text css={{ fontWeight: "500", fontSize: 25 }}>Cloud Type</Text>
+      </Container>
+      <Container
+        display="flex"
+        css={{
+          marginTop: "5px",
+          marginLeft: "60px",
+          flexDirection: "column",
+          width: "fit-content",
+        }}
+      >
+        <JSONMAP type="cloud" />
+      </Container>
+    </>
+  );
+}
+
+function Industry() {
+  return (
+    <>
+      <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
+        <Text css={{ fontWeight: "500", fontSize: 25 }}>Industry</Text>
+      </Container>
+      <Container
+        display="flex"
+        css={{
+          marginTop: "5px",
+          marginLeft: "60px",
+          flexDirection: "column",
+          width: "fit-content",
+        }}
+      >
+        <JSONMAP type="industry" />
+      </Container>
+    </>
+  );
+}
+
+function JSONMAP({type}:any) {
+  const [filter, setFilter] = useState(NEWJSON);
+  console.log(filter);
+  return (
+    <>
       {filter.map((filters, i) => {
-        return (
-          <Checkbox
-            checked={filters.checked}
-            size="sm"
-            key={i}
-            type={filters.type}
-          >
+        if (type==filters.type){
+
+          return (
+            <Checkbox checked={filters.checked} size="sm" key={i}>
             {filters.name}
           </Checkbox>
         );
+      }
       })}
     </>
   );
