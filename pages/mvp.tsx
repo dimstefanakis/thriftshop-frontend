@@ -11,6 +11,10 @@ import { fail } from "assert";
 import { useEffect, useState } from "react";
 import NEWJSON from "../newfilter.json";
 
+interface FilterProps{
+  [tit:string]:string
+}
+
 function Mvp() {
   return (
     <>
@@ -21,19 +25,25 @@ function Mvp() {
       >
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
-      <Filter />
-      <Cloud />
-      <Industry />
+      <Filter tit="fail" />
+      <Filter tit="cloud" />
+      <Filter tit="industry" />
+
+      {/* <Cloud />
+      <Industry /> */}
     </>
   );
 }
-
-function Filter() {
-
+let title = {
+  fail: "Failure reasons",
+  cloud: "Cloud type",
+  industry: "Industry",
+};
+function Filter({ tit }: FilterProps) {
   return (
     <>
       <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
-        <Text css={{ fontWeight: "500", fontSize: 25 }}>Failure Reasons</Text>
+        <Text css={{ fontWeight: "500", fontSize: 25 }}>{title[tit]}</Text>
       </Container>
       <Container
         display="flex"
@@ -44,56 +54,13 @@ function Filter() {
           width: "fit-content",
         }}
       >
-        <JSONMAP type="fail"/>
+        <JSONMAP type={tit} />
       </Container>
     </>
   );
 }
 
-function Cloud() {
-
-  return (
-    <>
-      <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
-        <Text css={{ fontWeight: "500", fontSize: 25 }}>Cloud Type</Text>
-      </Container>
-      <Container
-        display="flex"
-        css={{
-          marginTop: "5px",
-          marginLeft: "60px",
-          flexDirection: "column",
-          width: "fit-content",
-        }}
-      >
-        <JSONMAP type="cloud" />
-      </Container>
-    </>
-  );
-}
-
-function Industry() {
-  return (
-    <>
-      <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
-        <Text css={{ fontWeight: "500", fontSize: 25 }}>Industry</Text>
-      </Container>
-      <Container
-        display="flex"
-        css={{
-          marginTop: "5px",
-          marginLeft: "60px",
-          flexDirection: "column",
-          width: "fit-content",
-        }}
-      >
-        <JSONMAP type="industry" />
-      </Container>
-    </>
-  );
-}
-
-function JSONMAP({type}:any) {
+function JSONMAP({ type }: any) {
   const [filter, setFilter] = useState(NEWJSON);
   useEffect(() => {
     console.log(filter);
@@ -101,14 +68,23 @@ function JSONMAP({type}:any) {
   return (
     <>
       {NEWJSON.map((filters, i) => {
-        if (type==filters.type){
-
+        if (type == filters.type) {
           return (
-            <Checkbox checked={filters.checked} size="sm" key={i} onChange={(e)=>setFilter(filter=>({...filter,[i]:{...filter[i],checked:e.target.checked}}))}>
-            {filters.name}
-          </Checkbox>
-        );
-      }
+            <Checkbox
+              checked={filters.checked}
+              size="sm"
+              key={i}
+              onChange={(e) =>
+                setFilter((filter) => ({
+                  ...filter,
+                  [i]: { ...filter[i], checked: e.target.checked },
+                }))
+              }
+            >
+              {filters.name}
+            </Checkbox>
+          );
+        }
       })}
     </>
   );
