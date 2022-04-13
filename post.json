@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Path of resources",
+    "one_liner": "Lorem ipsun dolor sit amet, consectetur adipiscing elit...",
+    "image": "/por.png",
+    "description": "Fusce elementum libero sed augue sodales dictum. Suspendisse et pellentesque neque, sed vestibulum sapien. Pellentesque venenatis in mi quis tempor. Aliquam nec nulla et justo placerat commodo vel et nunc. Proin feugiat sem aliquam, lobortis leo id, gravida dolor. Etiam mollis lobortis ex a cursus. Etiam a lacinia nulla. Proin semper dignissim quam, ac varius enim cursus eu. Praesent id felis sodales, rutrum urna vel, tincidunt neque. Nunc fermentum sem ut est sollicitudin, vitae interdum orci lobortis. Nullam vel nulla felis. Integer tempor metus sed purus bibendum, ultricies efficitur mauris accumsan. Sed rhoncus, tortor eget mollis accumsan, enim augue fringilla risus, a dictum neque ante quis neque. Fusce tincidunt massa augue. Donec cursus nunc placerat risus pretium vulputate. Sed fermentum ante ultrices urna ullamcorper dapibus.",
+    "validation": "Fusce elementum libero sed augue sodales dictum. Suspendisse et pellentesque neque, sed vestibulum sapien. Pellentesque venenatis in mi quis tempor. Aliquam nec nulla et justo placerat commodo vel et nunc. Proin feugiat sem aliquam, lobortis leo id, gravida dolor. Etiam mollis lobortis ex a cursus. Etiam a lacinia nulla. Proin semper dignissim quam, ac varius enim cursus eu. Praesent id felis sodales, rutrum urna vel, tincidunt neque. Nunc fermentum sem ut est sollicitudin, vitae interdum orci lobortis. Nullam vel nulla felis. Integer tempor metus sed purus bibendum, ultricies efficitur mauris accumsan. Sed rhoncus, tortor eget mollis accumsan, enim augue fringilla risus, a dictum neque ante quis neque. Fusce tincidunt massa augue. Donec cursus nunc placerat risus pretium vulputate. Sed fermentum ante ultrices urna ullamcorper dapibus.",
+    "small_tags": [
+      {
+        "id": 1,
+        "name": "Misunderstood market",
+        "checked": false,
+        "type": "fail",
+        "color": "#eb5634"
+      },
+
+      {
+        "id": 4,
+        "name": "SaaS",
+        "checked": false,
+        "type": "cloud",
+        "color": "#34eb52"
+      },
+      {
+        "id": 10,
+        "name": "Django",
+        "type": "stack"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Path of resources",
+    "one_liner": "Lorem ipsun dolor sit amet, consectetur adipiscing elit...",
+    "image": "/por.png",
+    "description": "Fusce elementum libero sed augue sodales dictum. Suspendisse et pellentesque neque, sed vestibulum sapien. Pellentesque venenatis in mi quis tempor. Aliquam nec nulla et justo placerat commodo vel et nunc. Proin feugiat sem aliquam, lobortis leo id, gravida dolor. Etiam mollis lobortis ex a cursus. Etiam a lacinia nulla. Proin semper dignissim quam, ac varius enim cursus eu. Praesent id felis sodales, rutrum urna vel, tincidunt neque. Nunc fermentum sem ut est sollicitudin, vitae interdum orci lobortis. Nullam vel nulla felis. Integer tempor metus sed purus bibendum, ultricies efficitur mauris accumsan. Sed rhoncus, tortor eget mollis accumsan, enim augue fringilla risus, a dictum neque ante quis neque. Fusce tincidunt massa augue. Donec cursus nunc placerat risus pretium vulputate. Sed fermentum ante ultrices urna ullamcorper dapibus.",
+    "validation": "Fusce elementum libero sed augue sodales dictum. Suspendisse et pellentesque neque, sed vestibulum sapien. Pellentesque venenatis in mi quis tempor. Aliquam nec nulla et justo placerat commodo vel et nunc. Proin feugiat sem aliquam, lobortis leo id, gravida dolor. Etiam mollis lobortis ex a cursus. Etiam a lacinia nulla. Proin semper dignissim quam, ac varius enim cursus eu. Praesent id felis sodales, rutrum urna vel, tincidunt neque. Nunc fermentum sem ut est sollicitudin, vitae interdum orci lobortis. Nullam vel nulla felis. Integer tempor metus sed purus bibendum, ultricies efficitur mauris accumsan. Sed rhoncus, tortor eget mollis accumsan, enim augue fringilla risus, a dictum neque ante quis neque. Fusce tincidunt massa augue. Donec cursus nunc placerat risus pretium vulputate. Sed fermentum ante ultrices urna ullamcorper dapibus.",
+    "small_tags": [
+      {
+        "id": 1,
+        "name": "Misunderstood market",
+        "checked": false,
+        "type": "fail",
+        "color": "#eb5634"
+      },
+
+      {
+        "id": 4,
+        "name": "SaaS",
+        "checked": false,
+        "type": "cloud",
+        "color": "#34eb52"
+      },
+      {
+        "id": 10,
+        "name": "React",
+        "type": "stack"
+      }
+    ]
+  }
+]
