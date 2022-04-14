@@ -10,7 +10,6 @@ function Landing() {
 
   return (
     <>
-      <Header />
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <Container
           fluid
@@ -43,13 +42,13 @@ function Landing() {
               css={{
                 display: "flex",
                 paddingTop: 120,
-                paddingLeft: '$9',
-                paddingRight: '$9',
-                '@sm': {
-                  paddingLeft: '$20',
-                  paddingRight: '$20',
-                  paddingTop: 200
-                }
+                paddingLeft: "$9",
+                paddingRight: "$9",
+                "@sm": {
+                  paddingLeft: "$20",
+                  paddingRight: "$20",
+                  paddingTop: 200,
+                },
               }}
             >
               <Text
@@ -86,7 +85,7 @@ function Landing() {
                   MVPs
                 </Text>
               </Text>
-              <SubscribeToNewsletter/>
+              <SubscribeToNewsletter />
             </Container>
           </Col>
           <Col css={{ width: "60%" }} />
@@ -155,7 +154,7 @@ function Vision() {
     <Container
       alignItems="center"
       justify="center"
-      css={{ marginTop: "200px", display: 'flex', paddingBottom: "100px" }}
+      css={{ marginTop: "200px", display: "flex", paddingBottom: "100px" }}
     >
       <Container display="flex">
         <SectionTitle>The vision</SectionTitle>
