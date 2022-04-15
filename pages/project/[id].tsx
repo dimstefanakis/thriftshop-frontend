@@ -27,7 +27,7 @@ function Profile() {
       image={a?.image}
       one_liner={a?.one_liner}
       up_tags={
-        <Container css={{ marginLeft: "0px" }}>
+        <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
           <Row
             css={{
               flexWrap: "wrap",
@@ -46,25 +46,25 @@ function Profile() {
                     <Container
                       display="flex"
                       css={{
-                        marginTop: "20px",
                         width: "fit-content",
                         padding: "0px 0px",
                         margin: "10px 5px",
+                        marginLeft: "20px",
                       }}
                     >
-                      <Container
-                        display="flex"
+                      <Button
+                      disabled
+                        flat
+                        color={uptag.color}
                         css={{
-                          backgroundColor: uptag.color,
                           width: "fit-content",
-                          padding: "5px 10px",
-                          borderRadius: "35px",
+                          padding: "5px 20px",
+                          borderRadius: "$pill",
                         }}
+                        auto
                       >
-                        <Text css={{ fontSize: "16px", fontWeight: "700" }}>
-                          {uptag.name}
-                        </Text>
-                      </Container>
+                        {uptag.name}
+                      </Button>
                     </Container>
                   </>
                 );
@@ -76,7 +76,7 @@ function Profile() {
       description={a?.description}
       validation={a?.validation}
       small_tags={
-        <Container css={{ marginLeft: "0px" }}>
+        <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
           <Row
             css={{
               flexWrap: "wrap",
@@ -93,27 +93,28 @@ function Profile() {
                 return (
                   <>
                     <Container
-                      display="flex"
+                    display="flex"
                       css={{
-                        marginTop: "20px",
                         width: "fit-content",
                         padding: "0px 0px",
-                        margin: "10px 0px",
+                        margin: "5px 5px",
+                        marginLeft: "20px",
+                        marginBottom:"20px"
                       }}
                     >
-                      <Container
-                        display="flex"
+                      <Button
+                      disabled
+                        flat
+                        color="success"
                         css={{
-                          backgroundColor: " #2A21E5",
                           width: "fit-content",
-                          padding: "5px 10px",
+                          padding: "5px 20px",
                           borderRadius: "35px",
                         }}
+                        auto
                       >
-                        <Text css={{ fontSize: "16px", fontWeight: "700" }}>
-                          {tag.name}
-                        </Text>
-                      </Container>
+                        {tag.name}
+                      </Button>
                     </Container>
                   </>
                 );
@@ -142,11 +143,11 @@ function Project({
         key={id}
         justify="center"
         display="flex"
-        css={{ marginTop: "30px", marginLeft: "270px" }}
+        css={{ marginTop: "30px", marginLeft: "250px" }}
       >
         <Container display="flex" css={{ marginTop: "30px" }}>
           <Container
-            css={{ fontWeight: "600", fontSize: 30, marginLeft: "180px" }}
+            css={{ fontWeight: "600", fontSize: 30, marginLeft: "200px" }}
           >
             {" "}
             {title}
@@ -158,25 +159,25 @@ function Project({
               fontWeight: "500",
               fontSize: 20,
               lineHeight: "30px",
-              padding: "0px 10px",
+              padding: "0px 30px",
             }}
           >
             {one_liner}
           </Container>{" "}
           {up_tags}
-          <Image src={image} css={{ width: "900px" }} alt="" />
+          <Image src={image} css={{ width: "58%" }} alt="" />
           {small_tags}
-          <Container css={{ maxW: "900px", marginLeft: "0px" }}>
+          <Container css={{ width: "58%", marginLeft: "0px" }}>
             <Text css={{ fontSize: "30px", fontWeight: 600 }}>Description</Text>
-            <Container css={{ maxW: "950px", padding: "0px 0px" }}>
+            <Container css={{ padding: "0px 0px" }}>
               <Text css={{ fontSize: "20px" }}>{description}</Text>
             </Container>
           </Container>
           <Container
-            css={{ maxW: "900px", marginLeft: "0px", marginTop: "20px" }}
+            css={{ width: "58%", marginLeft: "0px", marginTop: "20px" }}
           >
             <Text css={{ fontSize: "30px", fontWeight: 600 }}>Validation</Text>
-            <Container css={{ maxW: "950px", paddingLeft: "0px" }}>
+            <Container css={{ paddingLeft: "0px" }}>
               <Text css={{ fontSize: "20px" }}>{validation}</Text>
             </Container>
           </Container>
