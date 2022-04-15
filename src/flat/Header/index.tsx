@@ -62,9 +62,9 @@ function Header() {
           />
           <div style={{ flex: 1 }}></div>
           <div>
-            <Button shadow auto onClick={onSignupClick}>
+            {/* <Button shadow auto onClick={onSignupClick}>
               Sign up
-            </Button>
+            </Button> */}
           </div>
         </Container>
       </Container>
