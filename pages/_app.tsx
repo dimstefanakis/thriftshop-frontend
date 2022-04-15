@@ -3,10 +3,15 @@ import { useEffect } from "react";
 import type { AppProps } from "next/app";
 import { NextUIProvider, createTheme } from "@nextui-org/react";
 import { QueryClientProvider, QueryClient } from "react-query";
-import { Provider } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import Layout from "../src/flat/Layout";
 import { store } from "../store";
-import { setupTokenInterceptor } from "../src/features/Authentication/slices/authenticationSlice";
+import {
+  setupTokenInterceptor,
+  getUserData,
+  setAccessTokenFromLocalStorage,
+} from "../src/features/Authentication/slices/authenticationSlice";
+import { RootState } from "../store";
 import blurr from "../public/blurrBGfilled.png";
 
 const queryClient = new QueryClient();
@@ -30,22 +35,41 @@ const theme = createTheme({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const dispatch = useDispatch();
+  const { accessToken, user } = useSelector(
+    (state: RootState) => state.authentication
+  );
 
   useEffect(() => {
     setupTokenInterceptor();
+    dispatch(setAccessTokenFromLocalStorage());
   }, []);
 
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserData());
+    }
+  }, [accessToken]);
+
+  console.log("user", user);
+
+  return (
+    <NextUIProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </QueryClientProvider>
+    </NextUIProvider>
+  );
+}
+
+function ReduxWrapper(props: AppProps) {
   return (
     <Provider store={store}>
-      <NextUIProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </QueryClientProvider>
-      </NextUIProvider>
+      <MyApp {...props} />
     </Provider>
   );
 }
 
-export default MyApp;
+export default ReduxWrapper;

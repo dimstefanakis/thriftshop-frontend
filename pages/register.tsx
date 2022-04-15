@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Link from "next/link";
 import {
   Container,
   Button,
@@ -12,7 +13,11 @@ import { useDispatch } from "react-redux";
 import useGetTwitterTokens from "../src/hooks/useGetTwitterTokens";
 import useRegisterMutation from "../src/hooks/useRegisterMutation";
 import useUpdateUserMutation from "../src/hooks/useUpdateUserMutation";
-import { setAccessToken, setRefreshToken, setUser } from "../src/features/Authentication/slices/authenticationSlice";
+import {
+  setAccessToken,
+  setRefreshToken,
+  setUser,
+} from "../src/features/Authentication/slices/authenticationSlice";
 
 function Register() {
   const dispatch = useDispatch();
@@ -61,7 +66,6 @@ function Register() {
     }
   }, [registerMutation.status]);
 
-  console.log(watch("name"));
   return (
     <Container
       justify="center"
@@ -87,12 +91,13 @@ function Register() {
           <Input
             fullWidth
             clearable
+            type="email"
             placeholder="Email"
             {...register("email")}
           />
         </Row>
         <Row justify="center" css={{ marginTop: "$sm" }}>
-          <Input
+          <Input.Password
             fullWidth
             clearable
             placeholder="Password"
@@ -100,7 +105,7 @@ function Register() {
           />
         </Row>
         <Row justify="center" css={{ marginTop: "$sm" }}>
-          <Input
+          <Input.Password
             fullWidth
             clearable
             placeholder="Password again"
@@ -137,6 +142,20 @@ function Register() {
           "Sign up with Twitter"
         )}
       </Button>
+      <Text css={{marginTop: '$sm'}}>
+        Already a user?{" "}
+        <Link href="/login">
+          <Text
+            css={{
+              textDecoration: "underline",
+              cursor: "pointer",
+              display: "inline",
+            }}
+          >
+            Login
+          </Text>
+        </Link>
+      </Text>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 interface UserData {
@@ -13,6 +13,16 @@ interface State {
   loading: boolean;
   loadingUserData: boolean;
 }
+
+export const getUserData = createAsyncThunk(
+  "authentication/getUserData",
+  async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/user/`
+    );
+    return response.data;
+  }
+);
 
 export function setupTokenInterceptor() {
   const token = localStorage.getItem("accessToken");
@@ -40,11 +50,30 @@ export const authenticationSlice = createSlice({
     loading: false,
     loadingUserData: false,
   },
+  extraReducers: (builder) => {
+    builder.addCase(getUserData.fulfilled, (state, { payload }) => {
+      state.user = payload;
+      state.loadingUserData = false;
+    });
+    builder.addCase(getUserData.pending, (state, { payload }) => {
+      state.loadingUserData = true;
+    });
+    builder.addCase(getUserData.rejected, (state, { payload }) => {
+      state.loadingUserData = false;
+    });
+  },
   reducers: {
     setAccessToken: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
       localStorage.setItem("accessToken", action.payload);
       setupTokenInterceptor();
+    },
+    setAccessTokenFromLocalStorage: (
+      state,
+      action: PayloadAction<undefined>
+    ) => {
+      let token = localStorage.getItem("accessToken");
+      state.accessToken = token;
     },
     setRefreshToken: (state, action: PayloadAction<string>) => {
       state.refreshToken = action.payload;
@@ -56,5 +85,9 @@ export const authenticationSlice = createSlice({
   },
 });
 
-export const { setAccessToken, setRefreshToken, setUser } =
-  authenticationSlice.actions;
+export const {
+  setAccessToken,
+  setAccessTokenFromLocalStorage,
+  setRefreshToken,
+  setUser,
+} = authenticationSlice.actions;
