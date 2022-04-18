@@ -25,7 +25,8 @@
       {
         "id": 10,
         "name": "Django",
-        "type": "stack"
+        "type": "stack",
+        "color":"primary"
       }
     ]
   },
@@ -55,7 +56,8 @@
       {
         "id": 10,
         "name": "React",
-        "type": "stack"
+        "type": "stack",
+        "color":"primary"
       }
       
     ]

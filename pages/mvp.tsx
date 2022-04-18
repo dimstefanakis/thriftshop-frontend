@@ -16,7 +16,8 @@ import FEEDPOST from "../post.json";
 import {useRouter} from "next/router"
 
 interface FilterProps {
-  [tit: string]: string;
+  // [tit: string]: string;
+  tit:keyof typeof title
 }
 
 function Mvp() {
@@ -164,21 +165,22 @@ function Feed() {
                                 margin: "10px 0px",
                               }}
                             >
-                              <Container
-                                display="flex"
+                              <Button
+                              disabled
+                              flat
+                              auto
+                                color={bigtag.color as any}
                                 css={{
-                                  backgroundColor: bigtag.color,
                                   width: "fit-content",
-                                  padding: "5px 10px",
-                                  borderRadius: "35px",
+                                  padding: "5px 20px",
+                                  borderRadius:"$pill",
+                                  cursor:"default"
+                                  
                                 }}
                               >
-                                <Text
-                                  css={{ fontSize: "16px", fontWeight: "700" }}
-                                >
+                                
                                   {bigtag.name}
-                                </Text>
-                              </Container>
+                              </Button>
                             </Container>
                           </>
                         );
@@ -213,21 +215,21 @@ function Feed() {
                                 margin: "10px 0px",
                               }}
                             >
-                              <Container
-                                display="flex"
+                              <Button
+                              flat 
+                              auto 
+                              disabled
+                              color={tag.color as any}
                                 css={{
-                                  backgroundColor: " #2A21E5",
                                   width: "fit-content",
-                                  padding: "5px 10px",
+                                  padding: "5px 20px",
                                   borderRadius: "35px",
+                                  cursor:"default"
                                 }}
                               >
-                                <Text
-                                  css={{ fontSize: "16px", fontWeight: "700" }}
-                                >
+                               
                                   {tag.name}
-                                </Text>
-                              </Container>
+                              </Button>
                             </Container>
                           </>
                         );
@@ -235,7 +237,7 @@ function Feed() {
                     })}
                   </Row>
                 </Container>
-                <Button
+                {/* <Button
                   css={{
                     marginLeft: "240px",
                     minWidth: "0px",
@@ -250,7 +252,7 @@ function Feed() {
 
                   Read more
                   </Text>
-                </Button>
+                </Button> */}
               </Container>
             </>
           );

@@ -16,7 +16,7 @@ function Profile() {
   const router = useRouter();
   const { id } = router.query;
   let a = FEEDPOST.find((e) => {
-    return e.id == id;
+    return e.id == parseInt(id as string) ;
   });
   console.log(a);
 
@@ -53,13 +53,14 @@ function Profile() {
                       }}
                     >
                       <Button
-                      disabled
+                        disabled
                         flat
-                        color={uptag.color}
+                        color={uptag.color as any}
                         css={{
                           width: "fit-content",
                           padding: "5px 20px",
                           borderRadius: "$pill",
+                          cursor: "default",
                         }}
                         auto
                       >
@@ -110,6 +111,7 @@ function Profile() {
                           width: "fit-content",
                           padding: "5px 20px",
                           borderRadius: "35px",
+                          cursor:"default"
                         }}
                         auto
                       >
