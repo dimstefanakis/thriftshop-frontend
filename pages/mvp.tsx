@@ -147,8 +147,8 @@ function Feed() {
                               css={{
                                 width: "fit-content",
                                 padding: "0px 0px",
-                                margin: "10px 5px",
-                                marginLeft: "20px",
+                                margin: "5px 0px",
+                                marginLeft: "10px",
                               }}
                             >
                               <Button
@@ -179,7 +179,7 @@ function Feed() {
                     css={{
                       flexWrap: "wrap",
                       width: "900px",
-                      marginTop: "10px",
+                      marginTop: "0px",
                     }}
                   >
                     {" "}
@@ -196,7 +196,7 @@ function Feed() {
                               css={{
                                 width: "fit-content",
                                 padding: "0px 0px",
-                                margin: "5px 5px",
+                                margin: "5px 0px",
                                 marginLeft: "20px",
                                 marginBottom: "20px",
                               }}
