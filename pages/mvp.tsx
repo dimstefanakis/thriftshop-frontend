@@ -13,11 +13,10 @@ import { fail } from "assert";
 import { useEffect, useState } from "react";
 import NEWJSON from "../newfilter.json";
 import FEEDPOST from "../post.json";
-import {useRouter} from "next/router"
+import { useRouter } from "next/router";
 
 interface FilterProps {
-  // [tit: string]: string;
-  tit:keyof typeof title
+  type: keyof typeof title;
 }
 
 function Mvp() {
@@ -25,16 +24,16 @@ function Mvp() {
     <>
       <Container
         display="flex"
-        css={{ width: "100%", marginTop: "60px" }}
+        css={{  marginTop: "60px",width:"fit-content" }}
         justify="center"
       >
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
-      <Row>
-        <Col css={{ margin: "0", width: "30%" }}>
-          <Filter tit="fail" />
-          <Filter tit="cloud" />
-          <Filter tit="industry" />
+      <Row >
+        <Col css={{ margin: "0",width:"25%"}}>
+          <Filter type="fail" />
+          <Filter type="cloud" />
+          <Filter type="industry" />
         </Col>
         <Col>
           <Feed />
@@ -51,22 +50,24 @@ let title = {
   cloud: "Cloud type",
   industry: "Industry",
 };
-function Filter({ tit }: FilterProps) {
+function Filter({ type }: FilterProps) {
   return (
     <>
       <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
-        <Text css={{ fontWeight: "500", fontSize: 25 }}>{title[tit]}</Text>
+        <Text css={{ fontWeight: "500", fontSize: 25 }}>{title[type]}</Text>
       </Container>
-      <Container
-        display="flex"
-        css={{
-          marginTop: "5px",
-          marginLeft: "60px",
-          flexDirection: "column",
-          width: "fit-content",
-        }}
-      >
-        <JSONMAP type={tit} />
+      <Container >
+        <Container
+          display="flex"
+          css={{
+            marginTop: "5px",
+            marginLeft: "0px",
+            flexDirection: "column",
+            width: "fit-content",
+          }}
+        >
+          <JSONMAP type={type} />
+        </Container>
       </Container>
     </>
   );
@@ -107,40 +108,25 @@ function JSONMAP({ type }: any) {
   );
 }
 
-
 function Feed() {
   const router = useRouter();
- 
-  const handleClick=(id:number)=>{
-    router.push(`/project/${id}`)
-  }
 
-  
+  const handleClick = (id: number) => {
+    router.push(`/project/${id}`);
+  };
+
   return (
     <>
-      <Container css={{marginBottom:"50px"}}>
+      <Container css={{ marginBottom: "50px",marginLeft:"0px" }}>
         {FEEDPOST.map((thread, i) => {
           return (
-            <>
-              <Container display="flex" css={{ marginTop: "30px" }}>
-                <Container
-                  css={{ fontWeight: "600", fontSize: 30, marginLeft: "220px" }}
-                >
-                  {" "}
-                  {thread.title}
-                </Container>
-                <Container css={{ marginLeft: "195px", marginBottom: "10px" }}>
-                  <Container
-                    css={{
-                      fontWeight: "500",
-                      fontSize: 20,
-                      lineHeight: "30px",
-                    }}
-                  >
-                    {thread.one_liner}
-                  </Container>{" "}
-                </Container>
-                <Container css={{ marginLeft: "210px" }}>
+            <FeedItem
+              key={thread.id}
+              title={thread.title}
+              oneLiner={thread.one_liner}
+              image={thread.image}
+              upTags={
+                <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
                   <Row
                     css={{
                       flexWrap: "wrap",
@@ -148,38 +134,36 @@ function Feed() {
                       marginTop: "10px",
                     }}
                   >
-                    {thread.small_tags.map((bigtag, b) => {
+                    {thread.small_tags.map((uptag, i) => {
                       if (
-                        bigtag.type === "fail" ||
-                        bigtag.type === "cloud" ||
-                        bigtag.type === "industry"
+                        uptag.type === "fail" ||
+                        uptag.type === "cloud" ||
+                        uptag.type === "industry"
                       ) {
                         return (
                           <>
                             <Container
                               display="flex"
                               css={{
-                                marginTop: "20px",
                                 width: "fit-content",
-                                padding: "0px 10px",
-                                margin: "10px 0px",
+                                padding: "0px 0px",
+                                margin: "10px 5px",
+                                marginLeft: "20px",
                               }}
                             >
                               <Button
-                              disabled
-                              flat
-                              auto
-                                color={bigtag.color as any}
+                                disabled
+                                flat
+                                color={uptag.color as any}
                                 css={{
                                   width: "fit-content",
                                   padding: "5px 20px",
-                                  borderRadius:"$pill",
-                                  cursor:"default"
-                                  
+                                  borderRadius: "$pill",
+                                  cursor: "default",
                                 }}
+                                auto
                               >
-                                
-                                  {bigtag.name}
+                                {uptag.name}
                               </Button>
                             </Container>
                           </>
@@ -188,9 +172,9 @@ function Feed() {
                     })}
                   </Row>
                 </Container>
-
-                <Image src={thread.image} css={{ width: "900px" }} alt="" />
-                <Container css={{ marginLeft: "210px" }}>
+              }
+              smallTags={
+                <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
                   <Row
                     css={{
                       flexWrap: "wrap",
@@ -198,7 +182,8 @@ function Feed() {
                       marginTop: "10px",
                     }}
                   >
-                    {thread.small_tags.map((tag, a) => {
+                    {" "}
+                    {thread.small_tags.map((tag, i) => {
                       if (
                         tag.type !== "fail" &&
                         tag.type !== "cloud" &&
@@ -209,35 +194,76 @@ function Feed() {
                             <Container
                               display="flex"
                               css={{
-                                marginTop: "20px",
                                 width: "fit-content",
-                                padding: "0px 10px",
-                                margin: "10px 0px",
+                                padding: "0px 0px",
+                                margin: "5px 5px",
+                                marginLeft: "20px",
+                                marginBottom: "20px",
                               }}
                             >
                               <Button
-                              flat 
-                              auto 
-                              disabled
-                              color={tag.color as any}
+                                disabled
+                                flat
+                                color="success"
                                 css={{
                                   width: "fit-content",
                                   padding: "5px 20px",
                                   borderRadius: "35px",
-                                  cursor:"default"
+                                  cursor: "default",
                                 }}
+                                auto
                               >
-                               
-                                  {tag.name}
+                                {tag.name}
                               </Button>
                             </Container>
                           </>
                         );
                       }
-                    })}
+                    })}{" "}
                   </Row>
                 </Container>
-                {/* <Button
+              }
+            />
+          );
+        })}
+      </Container>
+    </>
+  );
+}
+
+function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
+  return (
+    <>
+      <Container
+        display="flex"
+        css={{ marginTop: "30px", maxW: "1000px", marginLeft: "0px" }}
+        key={id}
+      >
+        <Container css={{ fontWeight: "600", fontSize: 30, width: "100%" }}>
+          {" "}
+          {title}
+        </Container>
+        <Container css={{ marginBottom: "10px" }}>
+          <Container
+            css={{
+              fontWeight: "500",
+              fontSize: 20,
+              lineHeight: "30px",
+              paddingLeft: "0px",
+            }}
+          >
+            {oneLiner}
+          </Container>{" "}
+        </Container>
+        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+          {upTags}
+        </Container>
+
+        <Image src={image} css={{ width: "100%", margin: "0px 0px" }} alt="" />
+        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+          {smallTags}
+        </Container>
+        {/* <Button
                   css={{
                     marginLeft: "240px",
                     minWidth: "0px",
@@ -253,10 +279,6 @@ function Feed() {
                   Read more
                   </Text>
                 </Button> */}
-              </Container>
-            </>
-          );
-        })}
       </Container>
     </>
   );
