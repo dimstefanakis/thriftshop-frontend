@@ -18,7 +18,7 @@ export const getUserData = createAsyncThunk(
   "authentication/getUserData",
   async () => {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/user/`
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/`
     );
     return response.data;
   }
@@ -64,9 +64,11 @@ export const authenticationSlice = createSlice({
   },
   reducers: {
     setAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
-      localStorage.setItem("accessToken", action.payload);
-      setupTokenInterceptor();
+      if (action.payload) {
+        state.accessToken = action.payload;
+        localStorage.setItem("accessToken", action.payload);
+        setupTokenInterceptor();
+      }
     },
     setAccessTokenFromLocalStorage: (
       state,

@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
-import { Container, Image, Button } from "@nextui-org/react";
+import { Container, Image, Avatar, Text, Button } from "@nextui-org/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
 
 function Header() {
+  const { user, accessToken } = useSelector((state: RootState) => state.authentication);
   const router = useRouter();
 
   function onHomeClick() {
@@ -62,6 +65,16 @@ function Header() {
           />
           <div style={{ flex: 1 }}></div>
           <div>
+            {accessToken && user && (
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <Text css={{
+                  fontSize: '$3',
+                  fontWeight: 'bold',
+                  marginRight: '$5'
+                }}>{user.name}</Text>
+                <Avatar src={user.twitter_avatar}/>
+              </div>
+            )}
             {/* <Button shadow auto onClick={onSignupClick}>
               Sign up
             </Button> */}

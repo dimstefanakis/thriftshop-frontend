@@ -47,6 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (accessToken) {
+      setupTokenInterceptor();
       dispatch(getUserData());
     }
   }, [accessToken]);

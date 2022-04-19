@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Container,
   Button,
@@ -9,16 +10,20 @@ import {
   Loading,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setAccessToken,
   setRefreshToken,
   setUser,
+  getUserData,
 } from "../src/features/Authentication/slices/authenticationSlice";
 import useLoginMutation from "../src/hooks/useLoginMutation";
+import { RootState } from "../store";
 
 function Login() {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.authentication);
   const loginMutation = useLoginMutation();
   const {
     register,
@@ -33,10 +38,16 @@ function Login() {
   });
 
   useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (loginMutation.isSuccess) {
       dispatch(setAccessToken(loginMutation.data.access_token));
       dispatch(setRefreshToken(loginMutation.data.refresh_token));
-      dispatch(setUser(loginMutation.data.user));
+      dispatch(getUserData());
     }
   }, [loginMutation.status]);
 

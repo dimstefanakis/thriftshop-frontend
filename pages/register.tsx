@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Container,
   Button,
@@ -9,7 +10,7 @@ import {
   Loading,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetTwitterTokens from "../src/hooks/useGetTwitterTokens";
 import useRegisterMutation from "../src/hooks/useRegisterMutation";
 import useUpdateUserMutation from "../src/hooks/useUpdateUserMutation";
@@ -17,9 +18,15 @@ import {
   setAccessToken,
   setRefreshToken,
   setUser,
+  getUserData,
 } from "../src/features/Authentication/slices/authenticationSlice";
+import { RootState } from "../store";
 
 function Register() {
+  const router = useRouter();
+  const { user, accessToken } = useSelector(
+    (state: RootState) => state.authentication
+  );
   const dispatch = useDispatch();
   const registerMutation = useRegisterMutation();
   const updateUserMutation = useUpdateUserMutation();
@@ -38,6 +45,12 @@ function Register() {
     },
   });
 
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
+
   function onTwitterClick() {
     refetch();
   }
@@ -54,7 +67,7 @@ function Register() {
       // populate store with user data
       dispatch(setAccessToken(registerMutation.data.access_token));
       dispatch(setRefreshToken(registerMutation.data.refresh_token));
-      dispatch(setUser(registerMutation.data.user));
+      dispatch(getUserData());
 
       let name = watch("name");
       let firstName = name.split(" ")[0];
@@ -142,7 +155,7 @@ function Register() {
           "Sign up with Twitter"
         )}
       </Button>
-      <Text css={{marginTop: '$sm'}}>
+      <Text css={{ marginTop: "$sm" }}>
         Already a user?{" "}
         <Link href="/login">
           <Text
