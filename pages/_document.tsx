@@ -13,7 +13,24 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>{CssBaseline.flush()}</Head>
+        <Head>
+          {CssBaseline.flush()}
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/logo192.png" />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-QCYFP905YE"
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-QCYFP905YE');`,
+            }}
+          ></script>
+        </Head>
         <body>
           <Main />
           <NextScript />
