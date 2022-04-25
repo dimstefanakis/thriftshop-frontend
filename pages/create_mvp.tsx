@@ -1,5 +1,15 @@
-import { Container, Grid, Text, Input, Textarea, Row, Button } from "@nextui-org/react";
+import {
+  Container,
+  Grid,
+  Text,
+  Input,
+  Textarea,
+  Row,
+  Spacer,
+  Button,
+} from "@nextui-org/react";
 import { useForm } from "react-hook-form";
+import MultiTagInput from "../src/features/MultiTagInput";
 
 function CreateMvp() {
   return (
@@ -63,6 +73,10 @@ function CreateMvp() {
             helperText="Max 1000 characters"
           />
         </Row>
+        <Row justify="center" css={{ marginTop: "$xl" }}>
+          <MultiTagInput label="Tech Stack" placeholder="test" />
+        </Row>
+        <Spacer y={4}/>
       </form>
     </Container>
   );
