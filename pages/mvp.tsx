@@ -24,13 +24,13 @@ function Mvp() {
     <>
       <Container
         display="flex"
-        css={{  marginTop: "60px",width:"fit-content" }}
+        css={{ marginTop: "60px", width: "fit-content" }}
         justify="center"
       >
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
-      <Row >
-        <Col css={{ margin: "0",width:"25%"}}>
+      <Row>
+        <Col css={{ margin: "0", width: "25%" }}>
           <Filter type="fail" />
           <Filter type="cloud" />
           <Filter type="industry" />
@@ -56,7 +56,7 @@ function Filter({ type }: FilterProps) {
       <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
         <Text css={{ fontWeight: "500", fontSize: 25 }}>{title[type]}</Text>
       </Container>
-      <Container >
+      <Container>
         <Container
           display="flex"
           css={{
@@ -117,7 +117,7 @@ function Feed() {
 
   return (
     <>
-      <Container css={{ marginBottom: "50px",marginLeft:"0px" }}>
+      <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
         {FEEDPOST.map((thread, i) => {
           return (
             <FeedItem
@@ -126,7 +126,7 @@ function Feed() {
               oneLiner={thread.one_liner}
               image={thread.image}
               upTags={
-                <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
+                <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
                   <Row
                     css={{
                       flexWrap: "wrap",
@@ -148,7 +148,7 @@ function Feed() {
                                 width: "fit-content",
                                 padding: "0px 0px",
                                 margin: "5px 0px",
-                                marginLeft: "10px",
+                                marginRight: "10px",
                               }}
                             >
                               <Button
@@ -160,6 +160,7 @@ function Feed() {
                                   padding: "5px 20px",
                                   borderRadius: "$pill",
                                   cursor: "default",
+                                  height: "30px",
                                 }}
                                 auto
                               >
@@ -174,7 +175,7 @@ function Feed() {
                 </Container>
               }
               smallTags={
-                <Container css={{ marginLeft: "0px", padding: "2px 10px" }}>
+                <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
                   <Row
                     css={{
                       flexWrap: "wrap",
@@ -197,7 +198,7 @@ function Feed() {
                                 width: "fit-content",
                                 padding: "0px 0px",
                                 margin: "5px 0px",
-                                marginLeft: "20px",
+                                marginRight: "20px",
                                 marginBottom: "20px",
                               }}
                             >
@@ -207,9 +208,10 @@ function Feed() {
                                 color="success"
                                 css={{
                                   width: "fit-content",
-                                  padding: "5px 20px",
+                                  padding: "0px 20px",
                                   borderRadius: "35px",
                                   cursor: "default",
+                                  height:"30px"
                                 }}
                                 auto
                               >
@@ -239,11 +241,18 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
         css={{ marginTop: "30px", maxW: "1000px", marginLeft: "0px" }}
         key={id}
       >
-        <Container css={{ fontWeight: "600", fontSize: 30, width: "100%" }}>
+        <Container
+          css={{
+            fontWeight: "600",
+            fontSize: 30,
+            width: "100%",
+            paddingLeft: "0px",
+          }}
+        >
           {" "}
           {title}
         </Container>
-        <Container css={{ marginBottom: "10px" }}>
+        <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
           <Container
             css={{
               fontWeight: "500",
@@ -258,8 +267,13 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
         <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
           {upTags}
         </Container>
-
-        <Image src={image} css={{ width: "100%", margin: "0px 0px" }} alt="" />
+        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+          <Image
+            src={image}
+            css={{ width: "100%", maxW: "100%", objectFit: "contain" }}
+            alt=""
+          />
+        </Container>
         <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
           {smallTags}
         </Container>
