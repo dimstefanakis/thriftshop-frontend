@@ -1,0 +1,36 @@
+{
+    "failures":[
+        {
+            "id":1, "name":"Misunderstood market","checked":false
+        },
+        {
+            "id":2, "name":"Market changes","checked":false
+        },
+        {
+            "id":3,"name":"Bad timing","checked":false
+        }
+    ],
+    "cloud_type":[
+        {
+            "id":1, "name":"SaaS","checked":false
+        },
+        {
+            "id":2, "name":"PaaS","checked":false
+        },
+        {
+            "id":3,"name":"IaaS","checked":false
+        }
+    ],
+    "industry":[
+        {
+            "id":1, "name":"Ecommerce","checked":false
+        },
+        {
+            "id":2, "name":"Healthcare","checked":false
+        },
+        {
+            "id":3,"name":"Edtech","checked":false
+        }
+    ]
+    
+}
