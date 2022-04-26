@@ -11,8 +11,8 @@ import {
 } from "@nextui-org/react";
 import { fail } from "assert";
 import { useEffect, useState } from "react";
-import NEWJSON from "../newfilter.json";
-import FEEDPOST from "../post.json";
+import NEWJSON from "../../newfilter.json";
+import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
 
 interface FilterProps {
@@ -236,48 +236,49 @@ function Feed() {
 function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
   return (
     <>
-      <Container
-        display="flex"
-        css={{ marginTop: "30px", maxW: "1000px", marginLeft: "0px" }}
-        key={id}
-      >
+      <Container display="flex" justify="center" css={{ maxW: "100%" }}>
         <Container
-          css={{
-            fontWeight: "600",
-            fontSize: 30,
-            width: "100%",
-            paddingLeft: "0px",
-          }}
+          display="flex"
+          css={{ marginTop: "30px", maxW: "1000px", marginLeft: "0px" }}
+          key={id}
         >
-          {" "}
-          {title}
-        </Container>
-        <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
           <Container
             css={{
-              fontWeight: "500",
-              fontSize: 20,
-              lineHeight: "30px",
+              fontWeight: "600",
+              fontSize: 30,
+              width: "100%",
               paddingLeft: "0px",
             }}
           >
-            {oneLiner}
-          </Container>{" "}
-        </Container>
-        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
-          {upTags}
-        </Container>
-        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
-          <Image
-            src={image}
-            css={{ width: "100%", maxW: "100%", objectFit: "contain" }}
-            alt=""
-          />
-        </Container>
-        <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
-          {smallTags}
-        </Container>
-        {/* <Button
+            {" "}
+            {title}
+          </Container>
+          <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
+            <Container
+              css={{
+                fontWeight: "500",
+                fontSize: 20,
+                lineHeight: "30px",
+                paddingLeft: "0px",
+              }}
+            >
+              {oneLiner}
+            </Container>{" "}
+          </Container>
+          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+            {upTags}
+          </Container>
+          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+            <Image
+              src={image}
+              css={{ width: "100%", maxW: "100%", objectFit: "contain" }}
+              alt=""
+            />
+          </Container>
+          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+            {smallTags}
+          </Container>
+          {/* <Button
                   css={{
                     marginLeft: "240px",
                     minWidth: "0px",
@@ -293,6 +294,7 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
                   Read more
                   </Text>
                 </Button> */}
+        </Container>
       </Container>
     </>
   );
