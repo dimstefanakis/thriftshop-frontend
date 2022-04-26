@@ -55,7 +55,7 @@ function SubscribeForm({ status, message, onValidated }: SubscribeFormProps) {
             auto
             onClick={submit}
             type="submit"
-            clickable={status !== "success"}
+            disabled={status === "success"}
           >
             {status == "sending" ? (
               <Loading type="spinner" color="white" size="sm" />

@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import MultiTagInput from "../src/features/MultiTagInput";
+import { Select, SelectMultiple } from "../src/features/Select";
 
 function CreateMvp() {
   return (
@@ -76,7 +77,37 @@ function CreateMvp() {
         <Row justify="center" css={{ marginTop: "$xl" }}>
           <MultiTagInput label="Tech Stack" placeholder="test" />
         </Row>
-        <Spacer y={4}/>
+        <Row justify="center" css={{ marginTop: "$xl" }}>
+          <Select
+            label="Test"
+            options={[
+              {
+                value: "other",
+                label: "Other",
+              },
+              {
+                value: "other2",
+                label: "Other2",
+              },
+            ]}
+          />
+        </Row>
+        <Row justify="center" css={{ marginTop: "$xl" }}>
+          <SelectMultiple
+            label="Test"
+            options={[
+              {
+                value: "other",
+                label: "Other",
+              },
+              {
+                value: "other2",
+                label: "Other2",
+              },
+            ]}
+          />
+        </Row>
+        <Spacer y={4} />
       </form>
     </Container>
   );
