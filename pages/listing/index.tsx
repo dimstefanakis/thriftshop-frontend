@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Container,
   Col,
@@ -9,8 +10,8 @@ import {
   Card,
   Button,
 } from "@nextui-org/react";
-import { fail } from "assert";
-import { useEffect, useState } from "react";
+import Tag from "../../src/flat/Tag";
+import { TagInterface } from "../../src/flat/Tag/interface";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
@@ -19,7 +20,7 @@ interface FilterProps {
   type: keyof typeof title;
 }
 
-function Mvp() {
+function ListingPage() {
   return (
     <>
       <Container
@@ -36,7 +37,7 @@ function Mvp() {
           <Filter type="industry" />
         </Col>
         <Col>
-          <Feed />
+          <Listing />
         </Col>
       </Row>
 
@@ -50,6 +51,7 @@ let title = {
   cloud: "Cloud type",
   industry: "Industry",
 };
+
 function Filter({ type }: FilterProps) {
   return (
     <>
@@ -91,10 +93,10 @@ function JSONMAP({ type }: any) {
                 checked={filters.checked}
                 size="sm"
                 key={i}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setFilter((filter) => ({
                     ...filter,
-                    [i]: { ...filter[i], checked: e.target.checked },
+                    [i]: { ...filter[i], checked: checked },
                   }))
                 }
               >
@@ -108,7 +110,7 @@ function JSONMAP({ type }: any) {
   );
 }
 
-function Feed() {
+function Listing() {
   const router = useRouter();
 
   const handleClick = (id: number) => {
@@ -120,111 +122,12 @@ function Feed() {
       <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
         {FEEDPOST.map((thread, i) => {
           return (
-            <FeedItem
+            <ListingItem
               key={thread.id}
               title={thread.title}
               oneLiner={thread.one_liner}
               image={thread.image}
-              upTags={
-                <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
-                  <Row
-                    css={{
-                      flexWrap: "wrap",
-                      width: "900px",
-                      marginTop: "10px",
-                    }}
-                  >
-                    {thread.small_tags.map((uptag, i) => {
-                      if (
-                        uptag.type === "fail" ||
-                        uptag.type === "cloud" ||
-                        uptag.type === "industry"
-                      ) {
-                        return (
-                          <>
-                            <Container
-                              display="flex"
-                              css={{
-                                width: "fit-content",
-                                padding: "0px 0px",
-                                margin: "5px 0px",
-                                marginRight: "10px",
-                              }}
-                            >
-                              <Button
-                                disabled
-                                flat
-                                color={uptag.color as any}
-                                css={{
-                                  width: "fit-content",
-                                  padding: "5px 20px",
-                                  borderRadius: "$pill",
-                                  cursor: "default",
-                                  height: "30px",
-                                }}
-                                auto
-                              >
-                                {uptag.name}
-                              </Button>
-                            </Container>
-                          </>
-                        );
-                      }
-                    })}
-                  </Row>
-                </Container>
-              }
-              smallTags={
-                <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
-                  <Row
-                    css={{
-                      flexWrap: "wrap",
-                      width: "900px",
-                      marginTop: "0px",
-                    }}
-                  >
-                    {" "}
-                    {thread.small_tags.map((tag, i) => {
-                      if (
-                        tag.type !== "fail" &&
-                        tag.type !== "cloud" &&
-                        tag.type !== "industry"
-                      ) {
-                        return (
-                          <>
-                            <Container
-                              display="flex"
-                              css={{
-                                width: "fit-content",
-                                padding: "0px 0px",
-                                margin: "5px 0px",
-                                marginRight: "20px",
-                                marginBottom: "20px",
-                              }}
-                            >
-                              <Button
-                                disabled
-                                flat
-                                color="success"
-                                css={{
-                                  width: "fit-content",
-                                  padding: "0px 20px",
-                                  borderRadius: "35px",
-                                  cursor: "default",
-                                  height:"30px"
-                                }}
-                                auto
-                              >
-                                {tag.name}
-                              </Button>
-                            </Container>
-                          </>
-                        );
-                      }
-                    })}{" "}
-                  </Row>
-                </Container>
-              }
+              tags={thread.small_tags}
             />
           );
         })}
@@ -233,13 +136,13 @@ function Feed() {
   );
 }
 
-function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
+function ListingItem({ title, oneLiner, tags, image, id }: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
         <Container
           display="flex"
-          css={{ marginTop: "30px", maxW: "1000px", marginLeft: "0px" }}
+          css={{ marginTop: "$xl", maxW: "700px" }}
           key={id}
         >
           <Container
@@ -250,8 +153,7 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
               paddingLeft: "0px",
             }}
           >
-            {" "}
-            {title}
+            <Text h1>{title}</Text>
           </Container>
           <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
             <Container
@@ -262,11 +164,23 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
                 paddingLeft: "0px",
               }}
             >
-              {oneLiner}
-            </Container>{" "}
+              <Text h4>{oneLiner}</Text>
+            </Container>
           </Container>
-          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
-            {upTags}
+          <Container
+            display="flex"
+            css={{ margin: "0px 0px", padding: "0px 0px" }}
+          >
+            {tags
+              .filter(
+                (tag: TagInterface) =>
+                  tag.type === "fail" ||
+                  tag.type === "cloud" ||
+                  tag.type === "industry"
+              )
+              .map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} key={i} />;
+              })}
           </Container>
           <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
             <Image
@@ -275,29 +189,25 @@ function FeedItem({ title, oneLiner, upTags, smallTags, image, id }: any) {
               alt=""
             />
           </Container>
-          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
-            {smallTags}
+          <Container
+            display="flex"
+            css={{ margin: "0px 0px", padding: "0px 0px" }}
+          >
+            {tags
+              .filter(
+                (tag: TagInterface) =>
+                  tag.type !== "fail" &&
+                  tag.type !== "cloud" &&
+                  tag.type !== "industry"
+              )
+              .map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} key={i} />;
+              })}
           </Container>
-          {/* <Button
-                  css={{
-                    marginLeft: "240px",
-                    minWidth: "0px",
-                    padding: "25px 30px",
-                    borderRadius: "256px",
-                    backgroundColor: "#2A21E5",
-                    marginTop:"20px"
-                  }}
-                  onClick={()=>handleClick(thread.id)}
-                >
-                  <Text css={{fontWeight:"700",fontSize:"20px",letterSpacing:"$wide"}}>
-
-                  Read more
-                  </Text>
-                </Button> */}
         </Container>
       </Container>
     </>
   );
 }
 
-export default Mvp;
+export default ListingPage;

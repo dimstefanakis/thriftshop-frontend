@@ -10,6 +10,8 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import Tag from "../../src/flat/Tag";
+import { TagInterface } from "../../src/flat/Tag/interface";
 import FEEDPOST from "../../post.json";
 
 function Profile() {
@@ -22,111 +24,15 @@ function Profile() {
 
   return (
     <>
-      <Container justify="center" display="flex" css={{margin:"0px 0px"}}>
+      <Container justify="center" display="flex">
         <Project
           id={data?.id}
           title={data?.title}
           image={data?.image}
           oneLiner={data?.one_liner}
-          upTags={
-            <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
-              <Row
-                css={{
-                  flexWrap: "wrap",
-                  width: "900px",
-                  marginTop: "10px",
-                }}
-              >
-                {data?.small_tags.map((uptag, i) => {
-                  if (
-                    uptag.type === "fail" ||
-                    uptag.type === "cloud" ||
-                    uptag.type === "industry"
-                  ) {
-                    return (
-                      <>
-                        <Container
-                          display="flex"
-                          css={{
-                            width: "fit-content",
-                            padding: "0px 0px",
-                            margin: "10px 5px",
-                            marginLeft: "0px",
-                          }}
-                        >
-                          <Button
-                            disabled
-                            flat
-                            color={uptag.color as any}
-                            css={{
-                              width: "fit-content",
-                              padding: "5px 20px",
-                              borderRadius: "$pill",
-                              cursor: "default",
-                            }}
-                            auto
-                          >
-                            {uptag.name}
-                          </Button>
-                        </Container>
-                      </>
-                    );
-                  }
-                })}
-              </Row>
-            </Container>
-          }
           description={data?.description}
           validation={data?.validation}
-          smallTags={
-            <Container css={{ marginLeft: "0px", padding: "2px 0px" }}>
-              <Row
-                css={{
-                  flexWrap: "wrap",
-                  width: "900px",
-                  marginTop: "10px",
-                }}
-              >
-                {data?.small_tags.map((tag, i) => {
-                  if (
-                    tag.type !== "fail" &&
-                    tag.type !== "cloud" &&
-                    tag.type !== "industry"
-                  ) {
-                    return (
-                      <>
-                        <Container
-                          display="flex"
-                          css={{
-                            width: "fit-content",
-                            padding: "0px 0px",
-                            margin: "0px 5px",
-                            marginLeft: "0px",
-                            marginBottom: "20px",
-                          }}
-                        >
-                          <Button
-                            disabled
-                            flat
-                            color="success"
-                            css={{
-                              width: "fit-content",
-                              padding: "5px 20px",
-                              borderRadius: "35px",
-                              cursor: "default",
-                            }}
-                            auto
-                          >
-                            {tag.name}
-                          </Button>
-                        </Container>
-                      </>
-                    );
-                  }
-                })}
-              </Row>
-            </Container>
-          }
+          tags={data?.small_tags}
         />
       </Container>
     </>
@@ -138,6 +44,7 @@ function Project({
   title,
   oneLiner,
   upTags,
+  tags,
   image,
   description,
   validation,
@@ -145,18 +52,15 @@ function Project({
 }: any) {
   return (
     <>
-      <Container display="flex" justify="center" css={{maxW:"50%"}}>
+      <Container display="flex" justify="center">
         <Container
           key={id}
-          
           css={{
-            marginTop: "30px",
+            marginTop: "100px",
+            maxW: "800px",
           }}
         >
-          <Container
-            
-            css={{ marginTop: "30px" }}
-          >
+          <Container css={{ marginTop: "30px" }}>
             <Container
               css={{
                 fontWeight: "600",
@@ -165,8 +69,7 @@ function Project({
                 paddingLeft: "0px",
               }}
             >
-              {" "}
-              {title}
+              <Text h1>{title}</Text>
             </Container>
           </Container>
           <Container css={{ marginLeft: "0px", marginBottom: "10px" }}>
@@ -178,23 +81,49 @@ function Project({
                 padding: "0px 0px",
               }}
             >
-              {oneLiner}
-            </Container>{" "}
-            {upTags}
+              <Text h3>{oneLiner}</Text>
+            </Container>
+            <Container display="flex" css={{ padding: 0 }}>
+              {tags
+                ?.filter(
+                  (tag: TagInterface) =>
+                    tag.type === "fail" ||
+                    tag.type === "cloud" ||
+                    tag.type === "industry"
+                )
+                .map((tag: TagInterface, i: number) => {
+                  return <Tag tag={tag} key={i} />;
+                })}
+            </Container>
             <Image
               src={image}
               css={{ maxW: "100%", width: "100%", objectFit: "contain" }}
               alt=""
             />
-            {smallTags}
+            <Container display="flex" css={{ padding: 0 }}>
+              {tags
+                ?.filter(
+                  (tag: TagInterface) =>
+                    tag.type !== "fail" &&
+                    tag.type !== "cloud" &&
+                    tag.type !== "industry"
+                )
+                .map((tag: TagInterface, i: number) => {
+                  return <Tag tag={tag} key={i} />;
+                })}
+            </Container>
             <Container
               css={{ width: "100%", marginLeft: "0px", paddingLeft: "0px" }}
             >
-              <Text css={{ fontSize: "30px", fontWeight: 600 }}>
-                Description
-              </Text>
+              <Text h2>Description</Text>
               <Container css={{ padding: "0px 0px" }}>
-                <Text css={{ fontSize: "20px" }}>{description}</Text>
+                <Text
+                  css={{
+                    lineHeight: "$sm",
+                  }}
+                >
+                  {description}
+                </Text>
               </Container>
             </Container>
             <Container
@@ -205,11 +134,15 @@ function Project({
                 paddingLeft: "0px",
               }}
             >
-              <Text css={{ fontSize: "30px", fontWeight: 600 }}>
-                Validation
-              </Text>
+              <Text h2>Validation</Text>
               <Container css={{ paddingLeft: "0px" }}>
-                <Text css={{ fontSize: "20px" }}>{validation}</Text>
+                <Text
+                  css={{
+                    lineHeight: "$sm",
+                  }}
+                >
+                  {validation}
+                </Text>
               </Container>
             </Container>
           </Container>
@@ -222,7 +155,6 @@ function Project({
           >
             <Row css={{ width: "100%" }} justify="center">
               <Button size="xl" css={{ marginRight: "20px" }}>
-                {" "}
                 Contact seller
               </Button>
               <Button size="xl">Get for 5000$</Button>
