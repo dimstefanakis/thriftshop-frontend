@@ -31,7 +31,7 @@ function ListingPage() {
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
       <Row>
-        <Col css={{ margin: "0", width: "25%" }}>
+        <Col css={{ marginLeft: '$xl', width: "25%" }}>
           <Filter type="fail" />
           <Filter type="cloud" />
           <Filter type="industry" />
@@ -54,11 +54,11 @@ let title = {
 
 function Filter({ type }: FilterProps) {
   return (
-    <>
-      <Container css={{ marginTop: "40px", marginLeft: "30px" }}>
-        <Text css={{ fontWeight: "500", fontSize: 25 }}>{title[type]}</Text>
+    <Container css={{padding: '0 20px'}}>
+      <Container css={{ marginTop: "40px" }}>
+        <Text css={{ marginLeft: 0 }} h3>{title[type]}</Text>
       </Container>
-      <Container>
+      <Container css={{padding: 0}}>
         <Container
           display="flex"
           css={{
@@ -71,7 +71,7 @@ function Filter({ type }: FilterProps) {
           <JSONMAP type={type} />
         </Container>
       </Container>
-    </>
+    </Container>
   );
 }
 
@@ -87,12 +87,18 @@ function JSONMAP({ type }: any) {
           return (
             <Container
               display="flex"
-              css={{ maxW: "300px", marginRight: "0px" }}
+              css={{
+                maxW: "300px",
+                marginRight: "0px",
+                padding: 0,
+                color: "$gray800",
+              }}
             >
               <Checkbox
                 checked={filters.checked}
                 size="sm"
                 key={i}
+                css={{}}
                 onChange={(checked) =>
                   setFilter((filter) => ({
                     ...filter,
@@ -142,7 +148,7 @@ function ListingItem({ title, oneLiner, tags, image, id }: any) {
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
         <Container
           display="flex"
-          css={{ marginTop: "$xl", maxW: "700px" }}
+          css={{ marginTop: "$xl", maxW: "800px" }}
           key={id}
         >
           <Container

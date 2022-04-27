@@ -43,12 +43,10 @@ function Project({
   id,
   title,
   oneLiner,
-  upTags,
   tags,
   image,
   description,
   validation,
-  smallTags,
 }: any) {
   return (
     <>
