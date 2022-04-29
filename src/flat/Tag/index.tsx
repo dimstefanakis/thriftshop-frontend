@@ -1,14 +1,14 @@
 import { Button } from "@nextui-org/react";
 import { TagProps } from "./interface";
 
-function Tag({ tag }: TagProps) {
+function Tag({ tag, type }: TagProps) {
   return (
     <Button
       flat
       color={
-        tag.type === "fail"
+        type === "fail"
           ? "error"
-          : tag.type === "cloud"
+          : type === "cloud"
           ? "primary"
           : "primary"
       }

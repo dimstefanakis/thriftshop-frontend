@@ -11,42 +11,57 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import Tag from "../../src/flat/Tag";
+import useGetMvp from "../../src/features/Listing/queries/useGetMvp";
 import { TagInterface } from "../../src/flat/Tag/interface";
 import FEEDPOST from "../../post.json";
 
-function Profile() {
+function MvpPage() {
   const router = useRouter();
   const { id } = router.query;
-  let data = FEEDPOST.find((e) => {
-    return e.id == parseInt(id as string);
-  });
+  const { status, data, error, refetch } = useGetMvp(id as string);
   console.log(data);
 
   return (
     <>
       <Container justify="center" display="flex">
-        <Project
-          id={data?.id}
-          title={data?.title}
-          image={data?.image}
-          oneLiner={data?.one_liner}
-          description={data?.description}
-          validation={data?.validation}
-          tags={data?.small_tags}
-        />
+        {data && (
+          <Mvp
+            id={data.id}
+            name={data.name}
+            description={data.description}
+            validation={data.validation}
+            oneLiner={data.one_liner}
+            image={data.preview_image}
+            hosting={data.hosting}
+            platforms={data.platforms}
+            services={data.services}
+            industries={data.industries}
+            techStack={data.tech_stack}
+            cloudTypes={data.cloud_types}
+            failureReasons={data.failure_reasons}
+            credit={data.credit}
+          />
+        )}
       </Container>
     </>
   );
 }
 
-function Project({
-  id,
-  title,
-  oneLiner,
-  tags,
-  image,
+function Mvp({
+  name,
   description,
   validation,
+  oneLiner,
+  cloudTypes,
+  failureReasons,
+  hosting,
+  platforms,
+  services,
+  industries,
+  techStack,
+  image,
+  credit,
+  id,
 }: any) {
   return (
     <>
@@ -67,7 +82,7 @@ function Project({
                 paddingLeft: "0px",
               }}
             >
-              <Text h1>{title}</Text>
+              <Text h1>{name}</Text>
             </Container>
           </Container>
           <Container css={{ marginLeft: "0px", marginBottom: "10px" }}>
@@ -82,16 +97,12 @@ function Project({
               <Text h3>{oneLiner}</Text>
             </Container>
             <Container display="flex" css={{ padding: 0 }}>
-              {tags
-                ?.filter(
-                  (tag: TagInterface) =>
-                    tag.type === "fail" ||
-                    tag.type === "cloud" ||
-                    tag.type === "industry"
-                )
-                .map((tag: TagInterface, i: number) => {
-                  return <Tag tag={tag} key={i} />;
-                })}
+              {[...failureReasons].map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} type="fail" key={i} />;
+              })}
+              {[...cloudTypes].map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} type="fail" key={i} />;
+              })}
             </Container>
             <Image
               src={image}
@@ -99,16 +110,15 @@ function Project({
               alt=""
             />
             <Container display="flex" css={{ padding: 0 }}>
-              {tags
-                ?.filter(
-                  (tag: TagInterface) =>
-                    tag.type !== "fail" &&
-                    tag.type !== "cloud" &&
-                    tag.type !== "industry"
-                )
-                .map((tag: TagInterface, i: number) => {
-                  return <Tag tag={tag} key={i} />;
-                })}
+              {[
+                ...industries,
+                ...platforms,
+                ...services,
+                ...techStack,
+                ...hosting,
+              ].map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} key={i} />;
+              })}
             </Container>
             <Container
               css={{ width: "100%", marginLeft: "0px", paddingLeft: "0px" }}
@@ -155,7 +165,7 @@ function Project({
               <Button size="xl" css={{ marginRight: "20px" }}>
                 Contact seller
               </Button>
-              <Button size="xl">Get for 5000$</Button>
+              <Button size="xl">Get for ${credit}</Button>
             </Row>
           </Container>
         </Container>
@@ -164,4 +174,4 @@ function Project({
   );
 }
 
-export default Profile;
+export default MvpPage;

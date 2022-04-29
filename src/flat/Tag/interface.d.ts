@@ -1,8 +1,9 @@
 export interface TagProps {
   tag: TagInterface;
+  type?: string;
 }
 
 interface TagInterface {
-  type: string;
   name: string;
+  id: string | number;
 }

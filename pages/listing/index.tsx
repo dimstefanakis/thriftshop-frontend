@@ -11,6 +11,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import Tag from "../../src/flat/Tag";
+import useGetListing from "../../src/features/Listing/queries/useGetListing";
 import { TagInterface } from "../../src/flat/Tag/interface";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
@@ -118,6 +119,7 @@ function JSONMAP({ type }: any) {
 
 function Listing() {
   const router = useRouter();
+  const { status, data, error, refetch } = useGetListing();
 
   const handleClick = (id: number) => {
     router.push(`/project/${id}`);
@@ -126,14 +128,21 @@ function Listing() {
   return (
     <>
       <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
-        {FEEDPOST.map((thread, i) => {
+        {data?.map((item: any, i: number) => {
           return (
             <ListingItem
-              key={thread.id}
-              title={thread.title}
-              oneLiner={thread.one_liner}
-              image={thread.image}
-              tags={thread.small_tags}
+              key={item.id}
+              name={item.name}
+              oneLiner={item.one_liner}
+              image={item.preview_image}
+              hosting={item.hosting}
+              platforms={item.platforms}
+              services={item.services}
+              industries={item.industries}
+              techStack={item.tech_stack}
+              cloudTypes={item.cloud_types}
+              failureReasons={item.failure_reasons}
+              tags={item.small_tags}
             />
           );
         })}
@@ -142,7 +151,19 @@ function Listing() {
   );
 }
 
-function ListingItem({ title, oneLiner, tags, image, id }: any) {
+function ListingItem({
+  name,
+  oneLiner,
+  cloudTypes,
+  failureReasons,
+  hosting,
+  platforms,
+  services,
+  industries,
+  techStack,
+  image,
+  id,
+}: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
@@ -159,7 +180,7 @@ function ListingItem({ title, oneLiner, tags, image, id }: any) {
               paddingLeft: "0px",
             }}
           >
-            <Text h1>{title}</Text>
+            <Text h1>{name}</Text>
           </Container>
           <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
             <Container
@@ -177,16 +198,12 @@ function ListingItem({ title, oneLiner, tags, image, id }: any) {
             display="flex"
             css={{ margin: "0px 0px", padding: "0px 0px" }}
           >
-            {tags
-              .filter(
-                (tag: TagInterface) =>
-                  tag.type === "fail" ||
-                  tag.type === "cloud" ||
-                  tag.type === "industry"
-              )
-              .map((tag: TagInterface, i: number) => {
-                return <Tag tag={tag} key={i} />;
-              })}
+            {[...failureReasons].map((tag: TagInterface, i: number) => {
+              return <Tag tag={tag} type="fail" key={i} />;
+            })}
+            {[...cloudTypes].map((tag: TagInterface, i: number) => {
+              return <Tag tag={tag} type="fail" key={i} />;
+            })}
           </Container>
           <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
             <Image
@@ -199,16 +216,15 @@ function ListingItem({ title, oneLiner, tags, image, id }: any) {
             display="flex"
             css={{ margin: "0px 0px", padding: "0px 0px" }}
           >
-            {tags
-              .filter(
-                (tag: TagInterface) =>
-                  tag.type !== "fail" &&
-                  tag.type !== "cloud" &&
-                  tag.type !== "industry"
-              )
-              .map((tag: TagInterface, i: number) => {
-                return <Tag tag={tag} key={i} />;
-              })}
+            {[
+              ...industries,
+              ...platforms,
+              ...services,
+              ...techStack,
+              ...hosting,
+            ].map((tag: TagInterface, i: number) => {
+              return <Tag tag={tag} key={i} />;
+            })}
           </Container>
         </Container>
       </Container>
