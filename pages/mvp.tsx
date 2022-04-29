@@ -91,10 +91,10 @@ function JSONMAP({ type }: any) {
                 checked={filters.checked}
                 size="sm"
                 key={i}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setFilter((filter) => ({
                     ...filter,
-                    [i]: { ...filter[i], checked: e.target.checked },
+                    [i]: { ...filter[i], checked: checked },
                   }))
                 }
               >
@@ -221,7 +221,7 @@ function Feed() {
                           </>
                         );
                       }
-                    })}{" "}
+                    })}
                   </Row>
                 </Container>
               }
