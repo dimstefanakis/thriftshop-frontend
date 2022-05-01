@@ -10,18 +10,68 @@ import {
   Card,
   Button,
 } from "@nextui-org/react";
+import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../src/flat/Tag";
 import useGetListing from "../../src/features/Listing/queries/useGetListing";
 import { TagInterface } from "../../src/flat/Tag/interface";
+import useGetTechStacks from "../../src/features/Filters/queries/useGetTechStacks";
+import useGetCloudTypes from "../../src/features/Filters/queries/useGetCloudTypes";
+import useGetIndustries from "../../src/features/Filters/queries/useGetIndustries";
+import useGetFailureReasons from "../../src/features/Filters/queries/useGetFailureReasons";
+import useGetHostings from "../../src/features/Filters/queries/useGetHostings";
+import useGetPlatforms from "../../src/features/Filters/queries/useGetPlatforms";
+import useGetServices from "../../src/features/Filters/queries/useGetServices";
+import {
+  setFilters,
+  setCheckedFilters,
+} from "../../src/features/Filters/filterSlice";
+import { RootState } from "../../store";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
 
 interface FilterProps {
-  type: keyof typeof title;
+  type?: keyof typeof title;
+  name: string;
+  values: any[];
 }
 
 function ListingPage() {
+  const dispatch = useDispatch();
+  const { filters, checkedFilters } = useSelector(
+    (state: RootState) => state.filters
+  );
+  const techStacks = useGetTechStacks();
+  const cloudTypes = useGetCloudTypes();
+  const industries = useGetIndustries();
+  const failureReasons = useGetFailureReasons();
+  const hostings = useGetHostings();
+  const platforms = useGetPlatforms();
+  const services = useGetServices();
+
+  console.log("filters", filters, checkedFilters);
+  useEffect(() => {
+    dispatch(
+      setFilters({
+        cloudTypes: cloudTypes.data,
+        failureReasons: failureReasons.data,
+        hostings: hostings.data,
+        platforms: platforms.data,
+        services: services.data,
+        techStacks: techStacks.data,
+        industries: industries.data,
+      })
+    );
+  }, [
+    techStacks.data,
+    cloudTypes.data,
+    industries.data,
+    failureReasons.data,
+    hostings.data,
+    platforms.data,
+    services.data,
+  ]);
+
   return (
     <>
       <Container
@@ -32,10 +82,10 @@ function ListingPage() {
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
       <Row>
-        <Col css={{ marginLeft: '$xl', width: "25%" }}>
-          <Filter type="fail" />
-          <Filter type="cloud" />
-          <Filter type="industry" />
+        <Col css={{ marginLeft: "$xl", width: "25%" }}>
+          <Filter name="Failure Reason" values={filters.failureReasons} />
+          <Filter name="Cloud Type" values={filters.cloudTypes} />
+          <Filter name="Industry" values={filters.industries} />
         </Col>
         <Col>
           <Listing />
@@ -53,13 +103,15 @@ let title = {
   industry: "Industry",
 };
 
-function Filter({ type }: FilterProps) {
+function Filter({ type, name, values }: FilterProps) {
   return (
-    <Container css={{padding: '0 20px'}}>
+    <Container css={{ padding: "0 20px" }}>
       <Container css={{ marginTop: "40px" }}>
-        <Text css={{ marginLeft: 0 }} h3>{title[type]}</Text>
+        <Text css={{ marginLeft: 0 }} h3>
+          {name}
+        </Text>
       </Container>
-      <Container css={{padding: 0}}>
+      <Container css={{ padding: 0 }}>
         <Container
           display="flex"
           css={{
@@ -69,49 +121,61 @@ function Filter({ type }: FilterProps) {
             width: "fit-content",
           }}
         >
-          <JSONMAP type={type} />
+          <FilterValues values={values} />
         </Container>
       </Container>
     </Container>
   );
 }
 
-function JSONMAP({ type }: any) {
-  const [filter, setFilter] = useState(NEWJSON);
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+function FilterValues({ values }: { values: any[] }) {
+  const dispatch = useDispatch();
+  const { checkedFilters } = useSelector((state: RootState) => state.filters);
+
+  function onChange(checked: boolean, filter: any) {
+    console.log("checkeddd", checked);
+
+    if (checked) {
+      dispatch(setCheckedFilters([...checkedFilters, filter]));
+    } else {
+      let newCheckedFilters = [...checkedFilters];
+      let filterIndex = newCheckedFilters.findIndex(
+        (f) => f.name === filter.name && f.id === filter.id
+      );
+      newCheckedFilters.splice(filterIndex, 1);
+      dispatch(setCheckedFilters(newCheckedFilters));
+    }
+  }
+
   return (
     <>
-      {NEWJSON.map((filters, i) => {
-        if (type == filters.type) {
-          return (
-            <Container
-              display="flex"
-              css={{
-                maxW: "300px",
-                marginRight: "0px",
-                padding: 0,
-                color: "$gray800",
-              }}
+      {values?.map((value, i) => {
+        return (
+          <Container
+            key={value.id}
+            display="flex"
+            css={{
+              maxW: "300px",
+              marginRight: "0px",
+              padding: 0,
+              color: "$gray800",
+            }}
+          >
+            <Checkbox
+              checked={
+                !!checkedFilters.find(
+                  (filter) =>
+                    filter.id === value.id && filter.name === value.name
+                )
+              }
+              size="sm"
+              css={{}}
+              onChange={(checked) => onChange(checked, value)}
             >
-              <Checkbox
-                checked={filters.checked}
-                size="sm"
-                key={i}
-                css={{}}
-                onChange={(checked) =>
-                  setFilter((filter) => ({
-                    ...filter,
-                    [i]: { ...filter[i], checked: checked },
-                  }))
-                }
-              >
-                {filters.name}
-              </Checkbox>
-            </Container>
-          );
-        }
+              {value.name}
+            </Checkbox>
+          </Container>
+        );
       })}
     </>
   );
