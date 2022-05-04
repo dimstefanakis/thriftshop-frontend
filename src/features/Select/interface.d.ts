@@ -2,14 +2,16 @@ export interface SelectProps {
   label: string;
   options: Option[];
   defaultValue?: Option;
-  selectedOption?: Option;
+  selectedOption?: Option | null;
+  onChange: (option: Option | undefined) => void;
 }
 
 export interface SelectMultipleProps {
   label: string;
   options: Option[];
   defaultValues?: Option[];
-  selectedOptions?: Option[];
+  selectedOptions?: Option[] | null;
+  onChange: (option: Option[] | undefined) => void;
 }
 
 export interface Option {

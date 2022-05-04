@@ -4,6 +4,7 @@ import { SelectMultipleProps, SelectProps } from "./interface";
 export function Select({
   label,
   selectedOption,
+  onChange,
   options,
   defaultValue,
 }: SelectProps) {
@@ -20,7 +21,13 @@ export function Select({
       >
         {label}
       </Text>
-      <Radio.Group size="xs" value={defaultValue?.value}>
+      <Radio.Group
+        onChange={(e) => {
+          onChange(options.find((o) => o.value === e));
+        }}
+        size="xs"
+        value={selectedOption ? selectedOption?.value : defaultValue?.value}
+      >
         {options.map((option, i) => {
           return (
             <Radio
@@ -36,8 +43,8 @@ export function Select({
           );
         })}
       </Radio.Group>
-      {selectedOption?.value == "other" && (
-        <Input placeholder="Please specify" />
+      {selectedOption?.label == "Other" && (
+        <Input css={{ marginTop: "$md" }} placeholder="Please specify" />
       )}
     </Container>
   );
@@ -46,6 +53,7 @@ export function Select({
 export function SelectMultiple({
   label,
   selectedOptions,
+  onChange,
   options,
   defaultValues,
 }: SelectMultipleProps) {
@@ -62,19 +70,45 @@ export function SelectMultiple({
       >
         {label}
       </Text>
-      <Checkbox.Group size="xs">
+      <Checkbox.Group
+        size="xs"
+        value={selectedOptions?.map((o) => o.value)}
+        onChange={(values) => {
+          onChange(
+            values.map((v) => {
+              let label = options.find((o) => o.value === v)?.label;
+              if (label) {
+                return {
+                  value: v,
+                  label: label,
+                };
+              } else {
+                return {
+                  value: v,
+                  label: v,
+                };
+              }
+            })
+          );
+        }}
+      >
         {options.map((option, i) => {
           return (
-            <Checkbox key={option.value} size="xs" value={option.value} css={{
-              marginTop: '$7'
-            }}>
+            <Checkbox
+              key={option.value}
+              size="xs"
+              value={option.value}
+              css={{
+                marginTop: "$7",
+              }}
+            >
               {option.label}
             </Checkbox>
           );
         })}
       </Checkbox.Group>
-      {selectedOptions?.find((option) => option.value == "other") && (
-        <Input placeholder="Please specify" />
+      {selectedOptions?.find((option) => option.label == "Other") && (
+        <Input width="100%" css={{ marginTop: "$md" }} placeholder="Please specify, use commas for many items eg. value1, value2" />
       )}
     </Container>
   );

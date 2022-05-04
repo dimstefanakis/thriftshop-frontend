@@ -25,6 +25,7 @@ import {
   setFilters,
   setCheckedFilters,
 } from "../../src/features/Filters/filterSlice";
+import useGetFilters from "../../src/hooks/useGetFilters";
 import { RootState } from "../../store";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
@@ -37,40 +38,8 @@ interface FilterProps {
 }
 
 function ListingPage() {
-  const dispatch = useDispatch();
-  const { filters, checkedFilters } = useSelector(
-    (state: RootState) => state.filters
-  );
-  const techStacks = useGetTechStacks();
-  const cloudTypes = useGetCloudTypes();
-  const industries = useGetIndustries();
-  const failureReasons = useGetFailureReasons();
-  const hostings = useGetHostings();
-  const platforms = useGetPlatforms();
-  const services = useGetServices();
-
-  console.log("filters", filters, checkedFilters);
-  useEffect(() => {
-    dispatch(
-      setFilters({
-        cloudTypes: cloudTypes.data,
-        failureReasons: failureReasons.data,
-        hostings: hostings.data,
-        platforms: platforms.data,
-        services: services.data,
-        techStacks: techStacks.data,
-        industries: industries.data,
-      })
-    );
-  }, [
-    techStacks.data,
-    cloudTypes.data,
-    industries.data,
-    failureReasons.data,
-    hostings.data,
-    platforms.data,
-    services.data,
-  ]);
+  useGetFilters();
+  const { filters } = useSelector((state: RootState) => state.filters);
 
   return (
     <>
@@ -86,6 +55,10 @@ function ListingPage() {
           <Filter name="Failure Reason" values={filters.failureReasons} />
           <Filter name="Cloud Type" values={filters.cloudTypes} />
           <Filter name="Industry" values={filters.industries} />
+          <Filter name="Platform" values={filters.platforms} />
+          <Filter name="Service" values={filters.services} />
+          <Filter name="Hosting" values={filters.hostings} />
+          <Filter name="Tech Stack" values={filters.techStacks} />
         </Col>
         <Col>
           <Listing />
@@ -133,8 +106,6 @@ function FilterValues({ values }: { values: any[] }) {
   const { checkedFilters } = useSelector((state: RootState) => state.filters);
 
   function onChange(checked: boolean, filter: any) {
-    console.log("checkeddd", checked);
-
     if (checked) {
       dispatch(setCheckedFilters([...checkedFilters, filter]));
     } else {
@@ -186,7 +157,7 @@ function Listing() {
   const { status, data, error, refetch } = useGetListing();
 
   const handleClick = (id: number) => {
-    router.push(`/project/${id}`);
+    router.push(`/listing/${id}`);
   };
 
   return (
@@ -207,6 +178,8 @@ function Listing() {
               cloudTypes={item.cloud_types}
               failureReasons={item.failure_reasons}
               tags={item.small_tags}
+              id={item.id}
+              onClick={handleClick}
             />
           );
         })}
@@ -227,15 +200,12 @@ function ListingItem({
   techStack,
   image,
   id,
+  onClick,
 }: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
-        <Container
-          display="flex"
-          css={{ marginTop: "$xl", maxW: "800px" }}
-          key={id}
-        >
+        <Container display="flex" css={{ marginTop: "$xl", maxW: "800px" }}>
           <Container
             css={{
               fontWeight: "600",
@@ -244,7 +214,18 @@ function ListingItem({
               paddingLeft: "0px",
             }}
           >
-            <Text h1>{name}</Text>
+            <Text
+              h1
+              css={{
+                cursor: 'pointer',
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+              onClick={() => onClick(id)}
+            >
+              {name}
+            </Text>
           </Container>
           <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
             <Container
