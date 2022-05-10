@@ -1,4 +1,11 @@
-import { Radio, Checkbox, Input, Text, Container } from "@nextui-org/react";
+import {
+  Radio,
+  Checkbox,
+  Input,
+  Text,
+  Container,
+  FormElement,
+} from "@nextui-org/react";
 import { SelectMultipleProps, SelectProps } from "./interface";
 
 export function Select({
@@ -57,6 +64,18 @@ export function SelectMultiple({
   options,
   defaultValues,
 }: SelectMultipleProps) {
+  function handleOtherChange(e: React.ChangeEvent<FormElement>) {
+    onChange(
+      selectedOptions.map((option) => {
+        if (option.label == "Other") {
+          return { label: "Other", value: e.target.value };
+        } else {
+          return option;
+        }
+      })
+    );
+  }
+
   return (
     <Container css={{ padding: 0 }}>
       <Text
@@ -71,6 +90,12 @@ export function SelectMultiple({
         {label}
       </Text>
       <Checkbox.Group
+        row
+        css={{
+          'div[role="presentation"]': {
+            flexWrap: "wrap",
+          },
+        }}
         size="xs"
         value={selectedOptions?.map((o) => o.value)}
         onChange={(values) => {
@@ -108,7 +133,15 @@ export function SelectMultiple({
         })}
       </Checkbox.Group>
       {selectedOptions?.find((option) => option.label == "Other") && (
-        <Input width="100%" css={{ marginTop: "$md" }} placeholder="Please specify, use commas for many items eg. value1, value2" />
+        <Input
+          width="100%"
+          css={{ marginTop: "$md" }}
+          onChange={handleOtherChange}
+          value={
+            selectedOptions?.find((option) => option.label == "Other")?.value
+          }
+          placeholder="Please specify, use commas for many items eg. value1, value2"
+        />
       )}
     </Container>
   );

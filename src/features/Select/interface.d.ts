@@ -10,8 +10,8 @@ export interface SelectMultipleProps {
   label: string;
   options: Option[];
   defaultValues?: Option[];
-  selectedOptions?: Option[] | null;
-  onChange: (option: Option[] | undefined) => void;
+  selectedOptions: Option[];
+  onChange: (option: Option[]) => void;
 }
 
 export interface Option {
