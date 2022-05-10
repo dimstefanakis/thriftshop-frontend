@@ -10,18 +10,37 @@ import {
   Card,
   Button,
 } from "@nextui-org/react";
+import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../src/flat/Tag";
 import useGetListing from "../../src/features/Listing/queries/useGetListing";
 import { TagInterface } from "../../src/flat/Tag/interface";
+import useGetTechStacks from "../../src/features/Filters/queries/useGetTechStacks";
+import useGetCloudTypes from "../../src/features/Filters/queries/useGetCloudTypes";
+import useGetIndustries from "../../src/features/Filters/queries/useGetIndustries";
+import useGetFailureReasons from "../../src/features/Filters/queries/useGetFailureReasons";
+import useGetHostings from "../../src/features/Filters/queries/useGetHostings";
+import useGetPlatforms from "../../src/features/Filters/queries/useGetPlatforms";
+import useGetServices from "../../src/features/Filters/queries/useGetServices";
+import {
+  setFilters,
+  setCheckedFilters,
+} from "../../src/features/Filters/filterSlice";
+import useGetFilters from "../../src/hooks/useGetFilters";
+import { RootState } from "../../store";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
 
 interface FilterProps {
-  type: keyof typeof title;
+  type?: keyof typeof title;
+  name: string;
+  values: any[];
 }
 
 function ListingPage() {
+  useGetFilters();
+  const { filters } = useSelector((state: RootState) => state.filters);
+
   return (
     <>
       <Container
@@ -32,10 +51,14 @@ function ListingPage() {
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
       <Row>
-        <Col css={{ marginLeft: '$xl', width: "25%" }}>
-          <Filter type="fail" />
-          <Filter type="cloud" />
-          <Filter type="industry" />
+        <Col css={{ marginLeft: "$xl", width: "25%" }}>
+          <Filter name="Failure Reason" values={filters.failureReasons} />
+          <Filter name="Cloud Type" values={filters.cloudTypes} />
+          <Filter name="Industry" values={filters.industries} />
+          <Filter name="Platform" values={filters.platforms} />
+          <Filter name="Service" values={filters.services} />
+          <Filter name="Hosting" values={filters.hostings} />
+          <Filter name="Tech Stack" values={filters.techStacks} />
         </Col>
         <Col>
           <Listing />
@@ -53,13 +76,15 @@ let title = {
   industry: "Industry",
 };
 
-function Filter({ type }: FilterProps) {
+function Filter({ type, name, values }: FilterProps) {
   return (
-    <Container css={{padding: '0 20px'}}>
+    <Container css={{ padding: "0 20px" }}>
       <Container css={{ marginTop: "40px" }}>
-        <Text css={{ marginLeft: 0 }} h3>{title[type]}</Text>
+        <Text css={{ marginLeft: 0 }} h3>
+          {name}
+        </Text>
       </Container>
-      <Container css={{padding: 0}}>
+      <Container css={{ padding: 0 }}>
         <Container
           display="flex"
           css={{
@@ -69,49 +94,59 @@ function Filter({ type }: FilterProps) {
             width: "fit-content",
           }}
         >
-          <JSONMAP type={type} />
+          <FilterValues values={values} />
         </Container>
       </Container>
     </Container>
   );
 }
 
-function JSONMAP({ type }: any) {
-  const [filter, setFilter] = useState(NEWJSON);
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+function FilterValues({ values }: { values: any[] }) {
+  const dispatch = useDispatch();
+  const { checkedFilters } = useSelector((state: RootState) => state.filters);
+
+  function onChange(checked: boolean, filter: any) {
+    if (checked) {
+      dispatch(setCheckedFilters([...checkedFilters, filter]));
+    } else {
+      let newCheckedFilters = [...checkedFilters];
+      let filterIndex = newCheckedFilters.findIndex(
+        (f) => f.name === filter.name && f.id === filter.id
+      );
+      newCheckedFilters.splice(filterIndex, 1);
+      dispatch(setCheckedFilters(newCheckedFilters));
+    }
+  }
+
   return (
     <>
-      {NEWJSON.map((filters, i) => {
-        if (type == filters.type) {
-          return (
-            <Container
-              display="flex"
-              css={{
-                maxW: "300px",
-                marginRight: "0px",
-                padding: 0,
-                color: "$gray800",
-              }}
+      {values?.map((value, i) => {
+        return (
+          <Container
+            key={value.id}
+            display="flex"
+            css={{
+              maxW: "300px",
+              marginRight: "0px",
+              padding: 0,
+              color: "$gray800",
+            }}
+          >
+            <Checkbox
+              checked={
+                !!checkedFilters.find(
+                  (filter) =>
+                    filter.id === value.id && filter.name === value.name
+                )
+              }
+              size="sm"
+              css={{}}
+              onChange={(checked) => onChange(checked, value)}
             >
-              <Checkbox
-                checked={filters.checked}
-                size="sm"
-                key={i}
-                css={{}}
-                onChange={(checked) =>
-                  setFilter((filter) => ({
-                    ...filter,
-                    [i]: { ...filter[i], checked: checked },
-                  }))
-                }
-              >
-                {filters.name}
-              </Checkbox>
-            </Container>
-          );
-        }
+              {value.name}
+            </Checkbox>
+          </Container>
+        );
       })}
     </>
   );
@@ -122,7 +157,7 @@ function Listing() {
   const { status, data, error, refetch } = useGetListing();
 
   const handleClick = (id: number) => {
-    router.push(`/project/${id}`);
+    router.push(`/listing/${id}`);
   };
 
   return (
@@ -143,6 +178,8 @@ function Listing() {
               cloudTypes={item.cloud_types}
               failureReasons={item.failure_reasons}
               tags={item.small_tags}
+              id={item.id}
+              onClick={handleClick}
             />
           );
         })}
@@ -163,15 +200,12 @@ function ListingItem({
   techStack,
   image,
   id,
+  onClick,
 }: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
-        <Container
-          display="flex"
-          css={{ marginTop: "$xl", maxW: "800px" }}
-          key={id}
-        >
+        <Container display="flex" css={{ marginTop: "$xl", maxW: "800px" }}>
           <Container
             css={{
               fontWeight: "600",
@@ -180,7 +214,18 @@ function ListingItem({
               paddingLeft: "0px",
             }}
           >
-            <Text h1>{name}</Text>
+            <Text
+              h1
+              css={{
+                cursor: 'pointer',
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+              onClick={() => onClick(id)}
+            >
+              {name}
+            </Text>
           </Container>
           <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
             <Container

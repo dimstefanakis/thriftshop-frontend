@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import type { AppProps } from "next/app";
 import { NextUIProvider, createTheme } from "@nextui-org/react";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import Layout from "../src/flat/Layout";
 import { store } from "../store";
@@ -14,6 +16,7 @@ import {
 import { RootState } from "../store";
 import blurr from "../public/blurrBGfilled.png";
 
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 const queryClient = new QueryClient();
 
 const theme = createTheme({
