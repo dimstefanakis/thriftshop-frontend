@@ -163,7 +163,7 @@ function Listing() {
   return (
     <>
       <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
-        {data?.map((item: any, i: number) => {
+        {data?.results.map((item: any, i: number) => {
           return (
             <ListingItem
               key={item.id}
