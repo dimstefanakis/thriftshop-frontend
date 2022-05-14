@@ -80,7 +80,7 @@ function Header() {
                 >
                   {user.name}
                 </Text>
-                <Avatar src={user.twitter_avatar} />
+                <Avatar src={user.avatar || user.twitter_avatar} />
               </div>
             )}
             {/* <Button shadow auto onClick={onSignupClick}>
