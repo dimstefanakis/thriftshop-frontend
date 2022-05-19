@@ -26,7 +26,10 @@ import { RootState } from "../../../store";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-function AreYouABuyer() {
+interface AreYouABuyerProps {
+  buttonText?: string;
+}
+function AreYouABuyer({ buttonText }: AreYouABuyerProps) {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.authentication);
   const { status, data, error, refetch } = useGetSubscriptionPlans();
@@ -121,7 +124,9 @@ function AreYouABuyer() {
           marginRight: "$xl",
         }}
       >
-        {isAlreadySubscribed ? "Your Subscription" : "Buyer? Get Premium"}
+        {isAlreadySubscribed
+          ? "Your Subscription"
+          : buttonText || "Buyer? Get Premium"}
       </Button>
 
       <Modal

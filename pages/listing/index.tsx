@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Container,
   Col,
@@ -9,26 +8,21 @@ import {
   Checkbox,
   Card,
   Button,
+  Loading,
 } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
+import { motion, Transition } from "framer-motion";
 import Tag from "../../src/flat/Tag";
+import CodeReviewBar from "../../src/features/CodeReviewBar";
+import useMediaQuery from "../../src/hooks/useMediaQuery";
 import useGetListing from "../../src/features/Listing/queries/useGetListing";
 import { TagInterface } from "../../src/flat/Tag/interface";
-import useGetTechStacks from "../../src/features/Filters/queries/useGetTechStacks";
-import useGetCloudTypes from "../../src/features/Filters/queries/useGetCloudTypes";
-import useGetIndustries from "../../src/features/Filters/queries/useGetIndustries";
-import useGetFailureReasons from "../../src/features/Filters/queries/useGetFailureReasons";
-import useGetHostings from "../../src/features/Filters/queries/useGetHostings";
-import useGetPlatforms from "../../src/features/Filters/queries/useGetPlatforms";
-import useGetServices from "../../src/features/Filters/queries/useGetServices";
 import {
   setFilters,
   setCheckedFilters,
 } from "../../src/features/Filters/filterSlice";
 import useGetFilters from "../../src/hooks/useGetFilters";
 import { RootState } from "../../store";
-import NEWJSON from "../../newfilter.json";
-import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
 
 interface FilterProps {
@@ -38,10 +32,28 @@ interface FilterProps {
 }
 
 function ListingPage() {
-  useGetFilters();
+  const { isDone } = useGetFilters();
   const { filters } = useSelector((state: RootState) => state.filters);
 
-  return (
+  const loadingAnimationVariants = {
+    hidden: { opacity: 0, y: -10 },
+    show: { opacity: 1, y: 0 },
+  };
+  const isSmall = useMediaQuery("(max-width: 800px)");
+
+  return isSmall ? (
+    <Container
+      display="flex"
+      css={{ marginTop: "100px", width: "fit-content" }}
+      justify="center"
+    >
+      <Text h3>This page is not yet optimized for small devices :(</Text>
+      <Text h3 css={{ mt: "$sm" }}>
+        We will be with you soon enough promise! Meanwhile please check on your
+        desktop!
+      </Text>
+    </Container>
+  ) : (
     <>
       <Container
         display="flex"
@@ -52,13 +64,19 @@ function ListingPage() {
       </Container>
       <Row>
         <Col css={{ marginLeft: "$xl", width: "25%" }}>
-          <Filter name="Failure Reason" values={filters.failureReasons} />
-          <Filter name="Cloud Type" values={filters.cloudTypes} />
-          <Filter name="Industry" values={filters.industries} />
-          <Filter name="Platform" values={filters.platforms} />
-          <Filter name="Service" values={filters.services} />
-          <Filter name="Hosting" values={filters.hostings} />
-          <Filter name="Tech Stack" values={filters.techStacks} />
+          <motion.div
+            variants={loadingAnimationVariants}
+            initial="hidden"
+            animate={isDone ? "show" : "hidden"}
+          >
+            <Filter name="Failure Reason" values={filters.failureReasons} />
+            <Filter name="Cloud Type" values={filters.cloudTypes} />
+            <Filter name="Industry" values={filters.industries} />
+            <Filter name="Platform" values={filters.platforms} />
+            <Filter name="Service" values={filters.services} />
+            <Filter name="Hosting" values={filters.hostings} />
+            <Filter name="Tech Stack" values={filters.techStacks} />
+          </motion.div>
         </Col>
         <Col>
           <Listing />
@@ -156,6 +174,11 @@ function Listing() {
   const router = useRouter();
   const { status, data, error, refetch } = useGetListing();
 
+  const loadingAnimationVariants = {
+    hidden: { opacity: 0, y: -10 },
+    show: { opacity: 1, y: 0 },
+  };
+
   const handleClick = (id: number) => {
     router.push(`/listing/${id}`);
   };
@@ -163,45 +186,52 @@ function Listing() {
   return (
     <>
       <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
-        {data?.results.map((item: any, i: number) => {
-          return (
-            <ListingItem
-              key={item.id}
-              name={item.name}
-              oneLiner={item.one_liner}
-              image={item.preview_image}
-              hosting={item.hosting}
-              platforms={item.platforms}
-              services={item.services}
-              industries={item.industries}
-              techStack={item.tech_stack}
-              cloudTypes={item.cloud_types}
-              failureReasons={item.failure_reasons}
-              tags={item.small_tags}
-              id={item.id}
-              onClick={handleClick}
-            />
-          );
-        })}
+        {!data && status === "loading" && (
+          <Container
+            css={{
+              padding: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 400,
+            }}
+          >
+            <Loading size="xl" />
+          </Container>
+        )}
+        <motion.div
+          variants={loadingAnimationVariants}
+          initial="hidden"
+          animate={status != "loading" ? "show" : "hidden"}
+        >
+          {data?.results.map((item: any, i: number) => {
+            return (
+              <ListingItem
+                mvp={item}
+                key={item.id}
+                name={item.name}
+                oneLiner={item.one_liner}
+                image={item.preview_image}
+                hosting={item.hosting}
+                platforms={item.platforms}
+                services={item.services}
+                industries={item.industries}
+                techStack={item.tech_stack}
+                cloudTypes={item.cloud_types}
+                failureReasons={item.failure_reasons}
+                tags={item.small_tags}
+                id={item.id}
+                onClick={handleClick}
+              />
+            );
+          })}
+        </motion.div>
       </Container>
     </>
   );
 }
 
-function ListingItem({
-  name,
-  oneLiner,
-  cloudTypes,
-  failureReasons,
-  hosting,
-  platforms,
-  services,
-  industries,
-  techStack,
-  image,
-  id,
-  onClick,
-}: any) {
+function ListingItem({ mvp, onClick }: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
@@ -217,14 +247,16 @@ function ListingItem({
             <Text
               h1
               css={{
-                cursor: 'pointer',
+                cursor: "pointer",
+                width: "max-content",
+                ml: 0,
                 "&:hover": {
                   textDecoration: "underline",
                 },
               }}
-              onClick={() => onClick(id)}
+              onClick={() => onClick(mvp.id)}
             >
-              {name}
+              {mvp.name}
             </Text>
           </Container>
           <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
@@ -236,23 +268,24 @@ function ListingItem({
                 paddingLeft: "0px",
               }}
             >
-              <Text h4>{oneLiner}</Text>
+              <Text h4>{mvp.one_liner}</Text>
             </Container>
           </Container>
+          <CodeReviewBar score={mvp.code_score} />
           <Container
             display="flex"
             css={{ margin: "0px 0px", padding: "0px 0px" }}
           >
-            {[...failureReasons].map((tag: TagInterface, i: number) => {
+            {[...mvp.failure_reasons].map((tag: TagInterface, i: number) => {
               return <Tag tag={tag} type="fail" key={i} />;
             })}
-            {[...cloudTypes].map((tag: TagInterface, i: number) => {
+            {[...mvp.cloud_types].map((tag: TagInterface, i: number) => {
               return <Tag tag={tag} type="fail" key={i} />;
             })}
           </Container>
           <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
             <Image
-              src={image}
+              src={mvp.preview_image}
               css={{ width: "100%", maxW: "100%", objectFit: "contain" }}
               alt=""
             />
@@ -262,11 +295,11 @@ function ListingItem({
             css={{ margin: "0px 0px", padding: "0px 0px" }}
           >
             {[
-              ...industries,
-              ...platforms,
-              ...services,
-              ...techStack,
-              ...hosting,
+              ...mvp.industries,
+              ...mvp.platforms,
+              ...mvp.services,
+              ...mvp.tech_stack,
+              ...mvp.hosting,
             ].map((tag: TagInterface, i: number) => {
               return <Tag tag={tag} key={i} />;
             })}
