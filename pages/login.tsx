@@ -77,7 +77,7 @@ function Login() {
             {...register("email")}
           />
         </Row>
-        <Row justify="center" css={{ marginTop: "$xl" }}>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
           <Input.Password
             fullWidth
             clearable
