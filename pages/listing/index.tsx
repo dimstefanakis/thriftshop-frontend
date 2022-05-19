@@ -10,6 +10,7 @@ import {
   Card,
   Button,
 } from "@nextui-org/react";
+import { Pagination } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../src/flat/Tag";
 import useGetListing from "../../src/features/Listing/queries/useGetListing";
@@ -30,11 +31,13 @@ import { RootState } from "../../store";
 import NEWJSON from "../../newfilter.json";
 import FEEDPOST from "../../post.json";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 interface FilterProps {
   type?: keyof typeof title;
   name: string;
   values: any[];
+  value: string;
 }
 
 function ListingPage() {
@@ -52,13 +55,33 @@ function ListingPage() {
       </Container>
       <Row>
         <Col css={{ marginLeft: "$xl", width: "25%" }}>
-          <Filter name="Failure Reason" values={filters.failureReasons} />
-          <Filter name="Cloud Type" values={filters.cloudTypes} />
-          <Filter name="Industry" values={filters.industries} />
-          <Filter name="Platform" values={filters.platforms} />
-          <Filter name="Service" values={filters.services} />
-          <Filter name="Hosting" values={filters.hostings} />
-          <Filter name="Tech Stack" values={filters.techStacks} />
+          <Filter
+            name="Failure Reason"
+            value="failure_reasons"
+            values={filters.failureReasons}
+          />
+          <Filter
+            name="Cloud Type"
+            value="cloud_types"
+            values={filters.cloudTypes}
+          />
+          <Filter
+            name="Industry"
+            value="industries"
+            values={filters.industries}
+          />
+          <Filter
+            name="Platform"
+            value="platforms"
+            values={filters.platforms}
+          />
+          <Filter name="Service" value="services" values={filters.services} />
+          <Filter name="Hosting" value="hosting" values={filters.hostings} />
+          <Filter
+            name="Tech Stack"
+            value="tech_stack"
+            values={filters.techStacks}
+          />
         </Col>
         <Col>
           <Listing />
@@ -76,7 +99,7 @@ let title = {
   industry: "Industry",
 };
 
-function Filter({ type, name, values }: FilterProps) {
+function Filter({ type, name, values, value }: FilterProps) {
   return (
     <Container css={{ padding: "0 20px" }}>
       <Container css={{ marginTop: "40px" }}>
@@ -94,20 +117,24 @@ function Filter({ type, name, values }: FilterProps) {
             width: "fit-content",
           }}
         >
-          <FilterValues values={values} />
+          <FilterValues values={values} value={value} />
         </Container>
       </Container>
     </Container>
   );
 }
 
-function FilterValues({ values }: { values: any[] }) {
+function FilterValues({ values, value }: { values: any[]; value: string }) {
   const dispatch = useDispatch();
   const { checkedFilters } = useSelector((state: RootState) => state.filters);
 
   function onChange(checked: boolean, filter: any) {
     if (checked) {
-      dispatch(setCheckedFilters([...checkedFilters, filter]));
+      let newFilter = { ...filter };
+      newFilter.value = value;
+      dispatch(
+        setCheckedFilters([...checkedFilters, { ...filter, value: value }])
+      );
     } else {
       let newCheckedFilters = [...checkedFilters];
       let filterIndex = newCheckedFilters.findIndex(
@@ -154,10 +181,48 @@ function FilterValues({ values }: { values: any[] }) {
 
 function Listing() {
   const router = useRouter();
-  const { status, data, error, refetch } = useGetListing();
+  const { checkedFilters } = useSelector((state: RootState) => state.filters);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageUrl, setPageUrl] = useState(
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/listing/`
+  );
+  const { status, data, error, refetch } = useGetListing(pageUrl);
+
+  const handlePageChange = (index: number) => {
+    setPageIndex(index);
+  };
+
+  function filterBuilder(value: string){
+    return checkedFilters
+    .filter((e) => e.value === value && e.name)
+    .map((e) => e.name)
+    .join(",")
+  }
+
+  useEffect(()=>{
+    let filterValues = [
+      "cloud_types",
+      "failure_reasons",
+      "platforms",
+      "industries",
+      "tech_stack",
+      "services",
+      "hosting",
+
+    ];
+
+    let searchParams = filterValues.map((value)=>{
+      let param = filterBuilder(value);
+      return `&${value}=${param}`;
+    })
+
+    setPageUrl(
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/listing/?page=${pageIndex}${searchParams.join('')}`
+    );
+  }, [pageIndex, checkedFilters])
 
   const handleClick = (id: number) => {
-    router.push(`/listing/${id}`);
+    // router.push(`/listing/${id}`);
   };
 
   return (
@@ -183,6 +248,9 @@ function Listing() {
             />
           );
         })}
+      </Container>
+      <Container css={{maxW:"800px"}}>
+        <Pagination total={data?.count} onChange={handlePageChange} />
       </Container>
     </>
   );
@@ -217,7 +285,7 @@ function ListingItem({
             <Text
               h1
               css={{
-                cursor: 'pointer',
+                cursor: "pointer",
                 "&:hover": {
                   textDecoration: "underline",
                 },
