@@ -121,7 +121,7 @@ function AreYouABuyer({ buttonText }: AreYouABuyerProps) {
         onClick={handler}
         auto
         css={{
-          marginRight: "$xl",
+          marginRight: "$xs",
         }}
       >
         {isAlreadySubscribed

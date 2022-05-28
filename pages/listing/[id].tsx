@@ -10,6 +10,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import CodeReviewBar from "../../src/features/CodeReviewBar";
 import Tag from "../../src/flat/Tag";
 import useGetMvp from "../../src/features/Listing/queries/useGetMvp";
 import { TagInterface } from "../../src/flat/Tag/interface";
@@ -71,19 +72,22 @@ function Mvp({ mvp }: any) {
             >
               <Text h3>{mvp.one_liner}</Text>
             </Container>
+            <CodeReviewBar score={mvp.code_score} />
             <Container display="flex" css={{ padding: 0 }}>
               {[...mvp.failure_reasons].map((tag: TagInterface, i: number) => {
                 return <Tag tag={tag} type="fail" key={i} />;
               })}
               {[...mvp.cloud_types].map((tag: TagInterface, i: number) => {
-                return <Tag tag={tag} type="fail" key={i} />;
+                return <Tag tag={tag} type="cloud" key={i} />;
               })}
             </Container>
-            <Image
-              src={mvp.preview_image}
-              css={{ maxW: "100%", width: "100%", objectFit: "contain" }}
-              alt=""
-            />
+            <Container css={{ padding: 0, mt: "$sm" }}>
+              <Image
+                src={mvp.preview_image}
+                css={{ maxW: "100%", width: "100%", objectFit: "contain" }}
+                alt=""
+              />
+            </Container>
             <Container display="flex" css={{ padding: 0 }}>
               {[
                 ...mvp.industries,
@@ -96,7 +100,7 @@ function Mvp({ mvp }: any) {
               })}
             </Container>
             <Container
-              css={{ width: "100%", marginLeft: "0px", paddingLeft: "0px" }}
+              css={{ width: "100%", marginTop: "$xl", paddingLeft: "0px" }}
             >
               <Text h2>Description</Text>
               <Container css={{ padding: "0px 0px" }}>
@@ -112,8 +116,7 @@ function Mvp({ mvp }: any) {
             <Container
               css={{
                 width: "100%",
-                marginLeft: "0px",
-                marginTop: "20px",
+                marginTop: "$xl",
                 paddingLeft: "0px",
               }}
             >
@@ -137,7 +140,11 @@ function Mvp({ mvp }: any) {
             }}
           >
             <Row css={{ width: "100%" }} justify="center">
-              <Button onClick={onContactClick} size="xl" css={{ marginRight: "20px" }}>
+              <Button
+                onClick={onContactClick}
+                size="xl"
+                css={{ marginRight: "20px" }}
+              >
                 Contact seller
               </Button>
               {/* <Button size="xl">Get for ${credit}</Button> */}

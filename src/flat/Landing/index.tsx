@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import Header from "../Header";
 import SubscribeToNewsletter from "../../features/SubscribeToNewsletter";
+import Footer from "../Footer";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { ParagraphProps } from "./interface";
 
@@ -110,7 +111,7 @@ function Landing() {
               >
                 View Listing
               </Button>
-              {!isMobile && !isTablet && <SubscribeToNewsletter />}
+              {/* {!isMobile && !isTablet && <SubscribeToNewsletter />} */}
             </Container>
           </Col>
           <Col css={{ width: "60%" }} />
@@ -125,18 +126,19 @@ function Landing() {
       </div>
       <Story />
       <Vision />
-      {isMobile || isTablet ? (
+      {/* {isMobile || isTablet ? (
         <Container
           css={{
             display: "flex",
             justifyContent: "center",
             mb: 100,
-            width: '100%'
+            width: "100%",
           }}
         >
           <SubscribeToNewsletter />
         </Container>
-      ) : null}
+      ) : null} */}
+      <Footer />
     </>
   );
 }

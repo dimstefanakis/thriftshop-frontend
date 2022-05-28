@@ -10,7 +10,7 @@ import {
   Button,
   Loading,
 } from "@nextui-org/react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Pagination } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, Transition } from "framer-motion";
@@ -29,7 +29,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 interface FilterProps {
-  type?: keyof typeof title;
   name: string;
   values: any[];
   value: string;
@@ -51,8 +50,10 @@ function ListingPage() {
       css={{ marginTop: "100px", width: "fit-content" }}
       justify="center"
     >
-      <Text h3>This page is not yet optimized for small devices :(</Text>
-      <Text h3 css={{ mt: "$sm" }}>
+      <Text h3 css={{ marginLeft: 0 }}>
+        This page is not yet optimized for small devices :(
+      </Text>
+      <Text h3 css={{ mt: "$sm", marginLeft: 0 }}>
         We will be with you soon enough promise! Meanwhile please check on your
         desktop!
       </Text>
@@ -66,39 +67,78 @@ function ListingPage() {
       >
         <Text css={{ fontWeight: "800", fontSize: 70 }}>MVPs</Text>
       </Container>
-      <Row>
-        <Col css={{ marginLeft: "$xl", width: "25%" }}>
-          <motion.div
-            variants={loadingAnimationVariants}
-            initial="hidden"
-            animate={isDone ? "show" : "hidden"}
-          >
-            <Filter name="Failure Reason" value="failure_reasons" values={filters.failureReasons} />
-            <Filter name="Cloud Type" value="cloud_types" values={filters.cloudTypes} />
-            <Filter name="Industry" value="industries" values={filters.industries} />
-            <Filter name="Platform" value="platforms" values={filters.platforms} />
-            <Filter name="Service" value="services" values={filters.services} />
-            <Filter name="Hosting" value="hosting" values={filters.hostings} />
-            <Filter name="Tech Stack" value="teck_stack" values={filters.techStacks} />
-          </motion.div>
-        </Col>
-        <Col>
-          <Listing />
-        </Col>
-      </Row>
+      <Container
+        css={{
+          width: "100%",
+          padding: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Row
+          css={{
+            display: "flex",
+            maxW: 1200,
+            justifyContent: "center",
+          }}
+        >
+          <Col css={{ width: "300px" }}>
+            <motion.div
+              variants={loadingAnimationVariants}
+              initial="hidden"
+              animate={isDone ? "show" : "hidden"}
+            >
+              <Filter
+                name="Failure Reason"
+                value="failure_reasons"
+                values={filters.failureReasons}
+              />
+              <Filter
+                name="Cloud Type"
+                value="cloud_types"
+                values={filters.cloudTypes}
+              />
+              <Filter
+                name="Industry"
+                value="industries"
+                values={filters.industries}
+              />
+              <Filter
+                name="Platform"
+                value="platforms"
+                values={filters.platforms}
+              />
+              <Filter
+                name="Service"
+                value="services"
+                values={filters.services}
+              />
+              <Filter
+                name="Hosting"
+                value="hosting"
+                values={filters.hostings}
+              />
+              <Filter
+                name="Tech Stack"
+                value="teck_stack"
+                values={filters.techStacks}
+              />
+            </motion.div>
+          </Col>
+          <Col css={{ flex: 1 }}>
+            <Listing />
+          </Col>
+        </Row>
+      </Container>
 
       {/* <Cloud />
       <Industry /> */}
     </>
   );
 }
-let title = {
-  fail: "Failure reasons",
-  cloud: "Cloud type",
-  industry: "Industry",
-};
 
-function Filter({ type, name, values, value }: FilterProps) {
+function Filter({ name, values, value }: FilterProps) {
   return (
     <Container css={{ padding: "0 20px" }}>
       <Container css={{ marginTop: "40px" }}>
@@ -187,18 +227,23 @@ function Listing() {
   );
   const { status, data, error, refetch } = useGetListing(pageUrl);
 
+  const loadingAnimationVariants = {
+    hidden: { opacity: 0, y: -10 },
+    show: { opacity: 1, y: 0 },
+  };
+
   const handlePageChange = (index: number) => {
     setPageIndex(index);
   };
 
-  function filterBuilder(value: string){
+  function filterBuilder(value: string) {
     return checkedFilters
-    .filter((e) => e.value === value && e.name)
-    .map((e) => e.name)
-    .join(",")
+      .filter((e) => e.value === value && e.name)
+      .map((e) => e.name)
+      .join(",");
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     let filterValues = [
       "cloud_types",
       "failure_reasons",
@@ -207,23 +252,25 @@ function Listing() {
       "tech_stack",
       "services",
       "hosting",
-
     ];
 
-    let searchParams = filterValues.map((value)=>{
+    let searchParams = filterValues.map((value) => {
       let param = filterBuilder(value);
       return `&${value}=${param}`;
-    })
+    });
 
     setPageUrl(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/listing/?page=${pageIndex}${searchParams.join('')}`
+      `${
+        process.env.NEXT_PUBLIC_API_URL
+      }/v1/listing/?page=${pageIndex}${searchParams.join("")}`
     );
-  }, [pageIndex, checkedFilters])
+  }, [pageIndex, checkedFilters]);
 
-  const loadingAnimationVariants = {
-    hidden: { opacity: 0, y: -10 },
-    show: { opacity: 1, y: 0 },
-  };
+  useEffect(() => {
+    if (window) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pageIndex]);
 
   const handleClick = (id: number) => {
     router.push(`/listing/${id}`);
@@ -252,29 +299,13 @@ function Listing() {
         >
           {data?.results.map((item: any, i: number) => {
             return (
-              <ListingItem
-                mvp={item}
-                key={item.id}
-                name={item.name}
-                oneLiner={item.one_liner}
-                image={item.preview_image}
-                hosting={item.hosting}
-                platforms={item.platforms}
-                services={item.services}
-                industries={item.industries}
-                techStack={item.tech_stack}
-                cloudTypes={item.cloud_types}
-                failureReasons={item.failure_reasons}
-                tags={item.small_tags}
-                id={item.id}
-                onClick={handleClick}
-              />
+              <ListingItem mvp={item} key={item.id} onClick={handleClick} />
             );
           })}
+          <Container css={{ mt: "$xl" }}>
+            <Pagination total={data?.total_pages} onChange={handlePageChange} />
+          </Container>
         </motion.div>
-      </Container>
-      <Container css={{maxW:"800px"}}>
-        <Pagination total={data?.count} onChange={handlePageChange} />
       </Container>
     </>
   );
@@ -284,7 +315,7 @@ function ListingItem({ mvp, onClick }: any) {
   return (
     <>
       <Container display="flex" justify="center" css={{ maxW: "100%" }}>
-        <Container display="flex" css={{ marginTop: "$xl", maxW: "800px" }}>
+        <Container display="flex" css={{ marginTop: "$xl", padding: 0 }}>
           <Container
             css={{
               fontWeight: "600",
@@ -329,10 +360,10 @@ function ListingItem({ mvp, onClick }: any) {
               return <Tag tag={tag} type="fail" key={i} />;
             })}
             {[...mvp.cloud_types].map((tag: TagInterface, i: number) => {
-              return <Tag tag={tag} type="fail" key={i} />;
+              return <Tag tag={tag} type="cloud" key={i} />;
             })}
           </Container>
-          <Container css={{ margin: "0px 0px", padding: "0px 0px" }}>
+          <Container css={{ margin: "0px 0px", padding: "0px 0px", mt: "$sm" }}>
             <Image
               src={mvp.preview_image}
               css={{ width: "100%", maxW: "100%", objectFit: "contain" }}

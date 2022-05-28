@@ -110,18 +110,24 @@ function CodeReviewBar({ score }: CodeReviewBarProps) {
       </Text>
 
       {user?.subscription?.status == "active" ? (
-        <Progress
-          value={score}
-          onClick={handleClick}
-          css={{
-            marginBottom: "$md",
-            transition: "ease 0.2s",
-            "&:hover": {
-              transform: "scaleY(1.4)",
-              cursor: "pointer",
-            },
-          }}
-        />
+        score == 0 ? (
+          <Button flat css={{ pointerEvents: "none" }}>
+            A code review will be available soon
+          </Button>
+        ) : (
+          <Progress
+            value={score}
+            onClick={handleClick}
+            css={{
+              marginBottom: "$md",
+              transition: "ease 0.2s",
+              "&:hover": {
+                transform: "scaleY(1.4)",
+                cursor: "pointer",
+              },
+            }}
+          />
+        )
       ) : (
         <Button flat css={{ pointerEvents: "none" }}>
           This feature is only availble to premium users

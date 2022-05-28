@@ -12,9 +12,13 @@ function useRegisterMutation() {
     return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/registration/`, {
       method: "POST",
       body: formData,
-    })
-      .then((res) => res.json())
-      .then((res) => res);
+    }).then(async (res) => {
+      let data = await res.json();
+      return {
+        status: res.status,
+        ...data,
+      };
+    });
   });
 
   return mutation;
