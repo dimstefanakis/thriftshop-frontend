@@ -79,7 +79,9 @@ function CreateMvp() {
       !watch("oneLiner") ||
       !watch("description") ||
       !watch("validation") ||
-      !watch("previewImage")
+      !watch("previewImage") ||
+      !watch("peakUsers") ||
+      !watch("currentUsers")
     );
   }
 
@@ -90,6 +92,12 @@ function CreateMvp() {
       router.push("/login");
     }
   }, [user]);
+
+  useEffect(() => {
+    if (mvpMutation.isSuccess) {
+      router.push("/mvp_submission_success");
+    }
+  }, [mvpMutation.status]);
 
   return (
     <Container
@@ -116,6 +124,10 @@ function CreateMvp() {
             description: data.description,
             validation: data.validation,
             previewImage: data.previewImage![0],
+            peakUsers: data.peakUsers,
+            currentUsers: data.currentUsers,
+            peakMrr: data.peakMrr,
+            currentMrr: data.currentMrr,
             platforms: selectedPlatforms.map((o) => o.value).join(","),
             services: selectedServices.map((o) => o.value).join(","),
             hostings: selectedHostings.map((o) => o.value).join(","),
@@ -199,7 +211,6 @@ function CreateMvp() {
             {...register("currentUsers")}
           />
         </Row>
-
         <Row justify="center" css={{ marginTop: "$xl", flexFlow: "column" }}>
           <Input
             fullWidth
@@ -392,7 +403,6 @@ function CreateMvp() {
             type="number"
             label="What was your peak MRR"
             placeholder="Specify in USD($)"
-            required
             {...register("peakMrr")}
           />
         </Row>
@@ -403,8 +413,7 @@ function CreateMvp() {
             type="number"
             label="What is your current MRR"
             placeholder="Specify in USD($)"
-            required
-            {...register("peakMrr")}
+            {...register("currentMrr")}
           />
         </Row>
 
