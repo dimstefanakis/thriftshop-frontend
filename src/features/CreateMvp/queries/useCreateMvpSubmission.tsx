@@ -17,6 +17,11 @@ function useCreateMvpSubmission() {
     formData.append("industries", data.industries);
     formData.append("failure_reasons", data.failureReasons);
     formData.append("preview_image", data.previewImage);
+    formData.append("peak_user_count", data.peakUsers || 0);
+    formData.append("current_user_count", data.currentUsers || 0);
+
+    formData.append("peak_mrr", data.peakMrr || 0);
+    formData.append("current_mrr", data.currentMrr || 0);
 
     let response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/v1/submit_mvp/`,
