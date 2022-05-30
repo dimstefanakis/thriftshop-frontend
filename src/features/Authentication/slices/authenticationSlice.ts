@@ -10,6 +10,7 @@ interface State {
   accessToken?: string | null;
   refreshToken?: string | null;
   user?: any;
+  errors: any[];
   loading: boolean;
   loadingUserData: boolean;
 }
@@ -47,6 +48,7 @@ export const authenticationSlice = createSlice({
     accessToken: null,
     refreshToken: null,
     user: null,
+    errors: [],
     loading: false,
     loadingUserData: false,
   },
@@ -84,6 +86,14 @@ export const authenticationSlice = createSlice({
     setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
     },
+    logout: (state, action: PayloadAction<undefined>) => {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.user = null;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+    }
   },
 });
 
@@ -92,4 +102,5 @@ export const {
   setAccessTokenFromLocalStorage,
   setRefreshToken,
   setUser,
+  logout
 } = authenticationSlice.actions;

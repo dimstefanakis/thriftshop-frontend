@@ -51,6 +51,11 @@ function Login() {
     }
   }, [loginMutation.status]);
 
+  function isDisabled() {
+    return !(watch("email") && watch("password"));
+  }
+
+  console.log("loginMutation.status", loginMutation.status, loginMutation.data);
   return (
     <Container
       justify="center"
@@ -73,20 +78,33 @@ function Login() {
           <Input
             fullWidth
             clearable
+            required
             placeholder="Email"
-            {...register("email")}
+            {...register("email", { required: true })}
           />
         </Row>
-        <Row justify="center" css={{ marginTop: "$xl" }}>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
           <Input.Password
             fullWidth
             clearable
+            required
             placeholder="Password"
-            {...register("password")}
+            {...register("password", { required: true })}
           />
         </Row>
+        {loginMutation?.data?.status === 400 ||
+        loginMutation?.data?.status == 401 ? (
+          <Row
+            justify="center"
+            css={{ marginTop: "$sm", display: "flex", flexFlow: "column" }}
+          >
+            <Text css={{ mt: "$sm" }} color="error">
+              Couldn&apos;t find an account with that email and password.
+            </Text>
+          </Row>
+        ) : null}
         <Row justify="center" css={{ marginTop: "$xl" }}>
-          <Button type="submit" auto>
+          <Button type="submit" disabled={isDisabled()} auto>
             {loginMutation.isLoading ? (
               <Loading color="white" size="sm" />
             ) : (

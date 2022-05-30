@@ -35,7 +35,7 @@ function Register() {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm({
     defaultValues: {
       name: "",
@@ -62,8 +62,9 @@ function Register() {
     }
   }, [status, data]);
 
+  console.log("registerMutation", registerMutation.data);
   useEffect(() => {
-    if (registerMutation.isSuccess) {
+    if (registerMutation.isSuccess && registerMutation.data.status !== 400) {
       // populate store with user data
       dispatch(setAccessToken(registerMutation.data.access_token));
       dispatch(setRefreshToken(registerMutation.data.refresh_token));
@@ -76,8 +77,18 @@ function Register() {
         firstName,
         lastName,
       });
+      router.push("/complete_profile");
     }
-  }, [registerMutation.status]);
+  }, [registerMutation.status, registerMutation.data]);
+
+  function isDisabled() {
+    return (
+      !watch("name") ||
+      !watch("email") ||
+      !watch("password") ||
+      !watch("passwordConfirm")
+    );
+  }
 
   return (
     <Container
@@ -98,35 +109,61 @@ function Register() {
         })}
       >
         <Row justify="center" css={{ marginTop: "$xl" }}>
-          <Input fullWidth clearable placeholder="Name" {...register("name")} />
+          <Input
+            required
+            fullWidth
+            clearable
+            placeholder="Name"
+            {...register("name", { required: true })}
+          />
         </Row>
         <Row justify="center" css={{ marginTop: "$sm" }}>
           <Input
             fullWidth
             clearable
+            required
             type="email"
             placeholder="Email"
-            {...register("email")}
+            {...register("email", { required: true })}
           />
         </Row>
         <Row justify="center" css={{ marginTop: "$sm" }}>
           <Input.Password
             fullWidth
             clearable
+            required
             placeholder="Password"
-            {...register("password")}
+            {...register("password", { required: true })}
           />
         </Row>
         <Row justify="center" css={{ marginTop: "$sm" }}>
           <Input.Password
             fullWidth
             clearable
+            required
             placeholder="Password again"
-            {...register("passwordConfirm")}
+            {...register("passwordConfirm", { required: true })}
           />
         </Row>
+        {registerMutation?.data?.status === 400 && (
+          <Row justify="center" css={{ marginTop: "$$sm", display: 'flex', flexFlow:'column' }}>
+            {registerMutation.data.email && (
+              <Text css={{ mt: "$sm" }} color="error">
+                {registerMutation.data.email[0]}
+              </Text>
+            )}
+            {registerMutation.data.password1 &&
+              registerMutation.data.password1.map((err: string) => {
+                return (
+                  <Text key={err} css={{ mt: "$sm" }} color="error">
+                    {err}
+                  </Text>
+                );
+              })}
+          </Row>
+        )}
         <Row justify="center" css={{ marginTop: "$xl" }}>
-          <Button type="submit" auto>
+          <Button type="submit" disabled={isDisabled()} auto>
             {registerMutation.isLoading ? (
               <Loading color="white" size="sm" />
             ) : (

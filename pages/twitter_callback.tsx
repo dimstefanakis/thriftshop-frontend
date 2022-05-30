@@ -44,6 +44,7 @@ function TwitterCallback() {
       dispatch(setAccessToken(loginWithTwitterMutation.data.access_token));
       dispatch(setRefreshToken(loginWithTwitterMutation.data.refresh_token));
       dispatch(getUserData());
+      router.push("/complete_profile");
     }
   }, [loginWithTwitterMutation.status]);
 

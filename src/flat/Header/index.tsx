@@ -1,10 +1,20 @@
 import { useRouter } from "next/router";
-import { Container, Image, Avatar, Text, Button } from "@nextui-org/react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import {
+  Container,
+  Image,
+  Avatar,
+  Text,
+  Button,
+  Popover,
+} from "@nextui-org/react";
+import { useSelector, useDispatch } from "react-redux";
 import AreYouABuyer from "../AreYouABuyer";
+import CreateMvpButton from "../CreateMvpButton";
+import { logout } from "../../features/Authentication/slices/authenticationSlice";
+import { RootState } from "../../../store";
 
 function Header() {
+  const dispatch = useDispatch();
   const { user, accessToken } = useSelector(
     (state: RootState) => state.authentication
   );
@@ -16,6 +26,10 @@ function Header() {
 
   function onSignupClick() {
     router.push("/register");
+  }
+
+  function onLogoutClick() {
+    dispatch(logout());
   }
 
   return (
@@ -68,24 +82,40 @@ function Header() {
           />
           <div style={{ flex: 1 }}></div>
           <div>
-            {accessToken && user && (
+            {accessToken && user ? (
               <div style={{ display: "flex", alignItems: "center" }}>
                 <AreYouABuyer />
+                <CreateMvpButton />
                 <Text
                   css={{
                     fontSize: "$3",
                     fontWeight: "bold",
-                    marginRight: "$5",
+                    marginRight: "$xs",
                   }}
                 >
                   {user.name}
                 </Text>
-                <Avatar src={user.twitter_avatar} />
+                <Popover triggerType="menu">
+                  <Popover.Trigger>
+                    <Avatar
+                      css={{ cursor: "pointer" }}
+                      src={user.avatar || user.twitter_avatar}
+                    />
+                  </Popover.Trigger>
+                  <Popover.Content>
+                    <Button.Group vertical>
+                      <Button color="error" onClick={onLogoutClick}>
+                        Logout
+                      </Button>
+                    </Button.Group>
+                  </Popover.Content>
+                </Popover>
               </div>
+            ) : (
+              <Button shadow auto onClick={onSignupClick}>
+                Sign up
+              </Button>
             )}
-            {/* <Button shadow auto onClick={onSignupClick}>
-              Sign up
-            </Button> */}
           </div>
         </Container>
       </Container>

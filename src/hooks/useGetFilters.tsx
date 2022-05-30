@@ -51,8 +51,10 @@ function useGetFilters() {
     hostings.data,
     platforms.data,
     services.data,
-    isDone
+    isDone,
   ]);
+
+  return { isDone };
 }
 
 export default useGetFilters;

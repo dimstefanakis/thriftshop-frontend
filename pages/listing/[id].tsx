@@ -10,10 +10,10 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import CodeReviewBar from "../../src/features/CodeReviewBar";
 import Tag from "../../src/flat/Tag";
 import useGetMvp from "../../src/features/Listing/queries/useGetMvp";
 import { TagInterface } from "../../src/flat/Tag/interface";
-import FEEDPOST from "../../post.json";
 
 function MvpPage() {
   const router = useRouter();
@@ -24,50 +24,26 @@ function MvpPage() {
   return (
     <>
       <Container justify="center" display="flex">
-        {data && (
-          <Mvp
-            id={data.id}
-            name={data.name}
-            description={data.description}
-            validation={data.validation}
-            oneLiner={data.one_liner}
-            image={data.preview_image}
-            hosting={data.hosting}
-            platforms={data.platforms}
-            services={data.services}
-            industries={data.industries}
-            techStack={data.tech_stack}
-            cloudTypes={data.cloud_types}
-            failureReasons={data.failure_reasons}
-            credit={data.credit}
-          />
-        )}
+        {data && <Mvp mvp={data} />}
       </Container>
     </>
   );
 }
 
-function Mvp({
-  name,
-  description,
-  validation,
-  oneLiner,
-  cloudTypes,
-  failureReasons,
-  hosting,
-  platforms,
-  services,
-  industries,
-  techStack,
-  image,
-  credit,
-  id,
-}: any) {
+function Mvp({ mvp }: any) {
+  function onContactClick() {
+    if (window) {
+      window.open(
+        `mailto:${mvp.user_profile.email}?subject=ThriftMVP listing for ${mvp.name}&body=Hey ${mvp.user_profile.name}, I saw your listing on ThriftMVP for ${mvp.name} and I would like to know more!`,
+        "_blank"
+      );
+    }
+  }
   return (
     <>
       <Container display="flex" justify="center">
         <Container
-          key={id}
+          key={mvp.id}
           css={{
             marginTop: "100px",
             maxW: "800px",
@@ -82,7 +58,7 @@ function Mvp({
                 paddingLeft: "0px",
               }}
             >
-              <Text h1>{name}</Text>
+              <Text h1>{mvp.name}</Text>
             </Container>
           </Container>
           <Container css={{ marginLeft: "0px", marginBottom: "10px" }}>
@@ -94,34 +70,37 @@ function Mvp({
                 padding: "0px 0px",
               }}
             >
-              <Text h3>{oneLiner}</Text>
+              <Text h3>{mvp.one_liner}</Text>
             </Container>
+            <CodeReviewBar score={mvp.code_score} />
             <Container display="flex" css={{ padding: 0 }}>
-              {[...failureReasons].map((tag: TagInterface, i: number) => {
+              {[...mvp.failure_reasons].map((tag: TagInterface, i: number) => {
                 return <Tag tag={tag} type="fail" key={i} />;
               })}
-              {[...cloudTypes].map((tag: TagInterface, i: number) => {
-                return <Tag tag={tag} type="fail" key={i} />;
+              {[...mvp.cloud_types].map((tag: TagInterface, i: number) => {
+                return <Tag tag={tag} type="cloud" key={i} />;
               })}
             </Container>
-            <Image
-              src={image}
-              css={{ maxW: "100%", width: "100%", objectFit: "contain" }}
-              alt=""
-            />
+            <Container css={{ padding: 0, mt: "$sm" }}>
+              <Image
+                src={mvp.preview_image}
+                css={{ maxW: "100%", width: "100%", objectFit: "contain" }}
+                alt=""
+              />
+            </Container>
             <Container display="flex" css={{ padding: 0 }}>
               {[
-                ...industries,
-                ...platforms,
-                ...services,
-                ...techStack,
-                ...hosting,
+                ...mvp.industries,
+                ...mvp.platforms,
+                ...mvp.services,
+                ...mvp.tech_stack,
+                ...mvp.hosting,
               ].map((tag: TagInterface, i: number) => {
                 return <Tag tag={tag} key={i} />;
               })}
             </Container>
             <Container
-              css={{ width: "100%", marginLeft: "0px", paddingLeft: "0px" }}
+              css={{ width: "100%", marginTop: "$xl", paddingLeft: "0px" }}
             >
               <Text h2>Description</Text>
               <Container css={{ padding: "0px 0px" }}>
@@ -130,15 +109,14 @@ function Mvp({
                     lineHeight: "$sm",
                   }}
                 >
-                  {description}
+                  {mvp.description}
                 </Text>
               </Container>
             </Container>
             <Container
               css={{
                 width: "100%",
-                marginLeft: "0px",
-                marginTop: "20px",
+                marginTop: "$xl",
                 paddingLeft: "0px",
               }}
             >
@@ -149,7 +127,7 @@ function Mvp({
                     lineHeight: "$sm",
                   }}
                 >
-                  {validation}
+                  {mvp.validation}
                 </Text>
               </Container>
             </Container>
@@ -162,10 +140,14 @@ function Mvp({
             }}
           >
             <Row css={{ width: "100%" }} justify="center">
-              <Button size="xl" css={{ marginRight: "20px" }}>
+              <Button
+                onClick={onContactClick}
+                size="xl"
+                css={{ marginRight: "20px" }}
+              >
                 Contact seller
               </Button>
-              <Button size="xl">Get for ${credit}</Button>
+              {/* <Button size="xl">Get for ${credit}</Button> */}
             </Row>
           </Container>
         </Container>

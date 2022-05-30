@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import {
   Container,
   Grid,
@@ -9,6 +10,8 @@ import {
   Row,
   Spacer,
   Button,
+  Loading,
+  FormElement,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import useGetFilters from "../src/hooks/useGetFilters";
@@ -20,8 +23,12 @@ import { RootState } from "../store";
 
 function CreateMvp() {
   useGetFilters();
+  const router = useRouter();
   const mvpMutation = useCreateMvpSubmission();
   const { filters } = useSelector((state: RootState) => state.filters);
+  const { accessToken, user } = useSelector(
+    (state: RootState) => state.authentication
+  );
   const [selectedReasons, setSelectedReasons] = useState<Option[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<Option[]>([]);
   const [selectedServices, setSelectedServices] = useState<Option[]>([]);
@@ -29,6 +36,7 @@ function CreateMvp() {
   const [selectedCloudTypes, setSelectedCloudTypes] = useState<Option[]>([]);
   const [selectedIndustries, setSelectedIndustries] = useState<Option[]>([]);
   const [selectedTechStacks, setSelectedTechStacks] = useState<Option[]>([]);
+  const previewImageRef = useRef<FormElement | null>(null);
   const {
     register,
     handleSubmit,
@@ -40,8 +48,15 @@ function CreateMvp() {
       oneLiner: "",
       description: "",
       validation: "",
+      peakMrr: "",
+      currentMrr: "",
+      peakUsers: "",
+      currentUsers: "",
+      previewImage: null,
     },
   });
+
+  const { ref, ...rest } = register("previewImage");
 
   // BIGGER THAN A BUCKET
   function isDisabled() {
@@ -63,9 +78,18 @@ function CreateMvp() {
       !watch("name") ||
       !watch("oneLiner") ||
       !watch("description") ||
-      !watch("validation")
+      !watch("validation") ||
+      !watch("previewImage")
     );
   }
+
+  let previewImage = watch("previewImage") as any;
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user]);
 
   return (
     <Container
@@ -82,7 +106,6 @@ function CreateMvp() {
           margin: "0 10px",
           maxWidth: 600,
           width: "100%",
-          height: "100vh",
         }}
         onSubmit={handleSubmit((data) => {
           // do something with the form data
@@ -92,13 +115,14 @@ function CreateMvp() {
             oneLiner: data.oneLiner,
             description: data.description,
             validation: data.validation,
-            reasons: selectedReasons.map((o) => o.value).join(","),
+            previewImage: data.previewImage![0],
             platforms: selectedPlatforms.map((o) => o.value).join(","),
             services: selectedServices.map((o) => o.value).join(","),
             hostings: selectedHostings.map((o) => o.value).join(","),
             cloudType: selectedCloudTypes.map((o) => o.value).join(","),
             industries: selectedIndustries.map((o) => o.value).join(","),
             techStack: selectedTechStacks.map((o) => o.value).join(","),
+            failureReasons: selectedReasons.map((o) => o.value).join(","),
           });
         })}
       >
@@ -121,7 +145,7 @@ function CreateMvp() {
             maxRows={2}
             maxLength={100}
             label="Project one-liner"
-            placeholder="My awesome project which is awesome and probably built on typescript and uses ethereum"
+            placeholder="This helps us market your MVP on potential buyers. Add something quick and impactful to catch their attention."
             helperText="Explain your project in less than 100 characters"
             required
             {...register("oneLiner")}
@@ -152,6 +176,55 @@ function CreateMvp() {
             required
             {...register("validation")}
           />
+        </Row>
+        <Row justify="center" css={{ marginTop: "$xl" }}>
+          <Input
+            fullWidth
+            clearable
+            type="number"
+            label="What was your peak user count?"
+            placeholder="e.g. 100"
+            required
+            {...register("peakUsers")}
+          />
+        </Row>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
+          <Input
+            fullWidth
+            clearable
+            type="number"
+            label="What is your current user count?"
+            placeholder="e.g. 100"
+            required
+            {...register("currentUsers")}
+          />
+        </Row>
+
+        <Row justify="center" css={{ marginTop: "$xl", flexFlow: "column" }}>
+          <Input
+            fullWidth
+            hidden
+            type="file"
+            label="Project validation"
+            required
+            css={{ height: 18 }}
+            ref={(e) => {
+              ref(e);
+              previewImageRef.current = e;
+            }}
+            {...rest}
+          />
+          <Button
+            css={{ mt: "$xs" }}
+            onClick={() => {
+              previewImageRef.current?.click();
+            }}
+          >
+            {previewImage ? "Change" : "Add"} Preview Image
+          </Button>
+          {previewImage && (
+            <Text css={{ mt: "$xs" }}>{previewImage![0].name}</Text>
+          )}
         </Row>
         {/* <Row justify="center" css={{ marginTop: "$xl" }}>
           <MultiTagInput
@@ -197,7 +270,7 @@ function CreateMvp() {
         </Row>
         <Row justify="center" css={{ marginTop: "$xl" }}>
           <SelectMultiple
-            label="Cloud Type"
+            label="Service Type"
             selectedOptions={selectedCloudTypes}
             onChange={(values: any) => setSelectedCloudTypes(values)}
             options={[
@@ -309,13 +382,43 @@ function CreateMvp() {
             ]}
           />
         </Row>
+        <Text h3 css={{ padding: 0, mt: "$xl", marginLeft: 0 }}>
+          For early revenue MVPs (answers optional)
+        </Text>
+        <Row justify="center" css={{ marginTop: "$xl" }}>
+          <Input
+            fullWidth
+            clearable
+            type="number"
+            label="What was your peak MRR"
+            placeholder="Specify in USD($)"
+            required
+            {...register("peakMrr")}
+          />
+        </Row>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
+          <Input
+            fullWidth
+            clearable
+            type="number"
+            label="What is your current MRR"
+            placeholder="Specify in USD($)"
+            required
+            {...register("peakMrr")}
+          />
+        </Row>
+
         <Button
           disabled={isDisabled()}
           type="submit"
           auto
           css={{ marginTop: "$xl" }}
         >
-          Submit
+          {mvpMutation.isLoading ? (
+            <Loading color="white" size="sm" />
+          ) : (
+            "Submit MVP"
+          )}
         </Button>
         <Spacer y={4} />
       </form>

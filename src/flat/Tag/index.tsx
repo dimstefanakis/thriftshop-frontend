@@ -19,7 +19,7 @@ function Tag({ tag, type }: TagProps) {
         padding: "0px 20px",
         cursor: "default",
         marginRight: "$sm",
-        marginBottom: "$sm",
+        marginBottom: 0,
         marginTop: "$sm",
       }}
       auto

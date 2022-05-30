@@ -16,10 +16,16 @@ function useCreateMvpSubmission() {
     formData.append("tech_stack", data.techStack);
     formData.append("industries", data.industries);
     formData.append("failure_reasons", data.failureReasons);
+    formData.append("preview_image", data.previewImage);
 
     let response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/v1/submit_mvp/`,
-      formData
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   });
