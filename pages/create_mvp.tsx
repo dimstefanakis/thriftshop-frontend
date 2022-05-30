@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import {
   Container,
   Grid,
@@ -22,8 +23,12 @@ import { RootState } from "../store";
 
 function CreateMvp() {
   useGetFilters();
+  const router = useRouter();
   const mvpMutation = useCreateMvpSubmission();
   const { filters } = useSelector((state: RootState) => state.filters);
+  const { accessToken, user } = useSelector(
+    (state: RootState) => state.authentication
+  );
   const [selectedReasons, setSelectedReasons] = useState<Option[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<Option[]>([]);
   const [selectedServices, setSelectedServices] = useState<Option[]>([]);
@@ -79,6 +84,13 @@ function CreateMvp() {
   }
 
   let previewImage = watch("previewImage") as any;
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user]);
+
   return (
     <Container
       justify="center"
