@@ -55,7 +55,6 @@ function Login() {
     return !(watch("email") && watch("password"));
   }
 
-  console.log("loginMutation.status", loginMutation.status, loginMutation.data);
   return (
     <Container
       justify="center"
@@ -112,6 +111,20 @@ function Login() {
             )}
           </Button>
         </Row>
+        <Text css={{ marginTop: "$sm", textAlign: 'center' }}>
+          Forgot password?
+          <Link href="/password/forgot">
+            <Text
+              css={{
+                textDecoration: "underline",
+                cursor: "pointer",
+                display: "inline",
+              }}
+            >
+              Reset it here
+            </Text>
+          </Link>
+        </Text>
       </form>
     </Container>
   );

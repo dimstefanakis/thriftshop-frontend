@@ -55,8 +55,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [accessToken]);
 
-  console.log("user", user);
-
   return (
     <NextUIProvider theme={theme}>
       <QueryClientProvider client={queryClient}>

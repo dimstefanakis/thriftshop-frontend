@@ -47,7 +47,11 @@ function Register() {
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      if (user.is_buyer || user.is_seller) {
+        router.push("/");
+      } else {
+        router.push("/complete_profile");
+      }
     }
   }, [user]);
 
@@ -62,7 +66,6 @@ function Register() {
     }
   }, [status, data]);
 
-  console.log("registerMutation", registerMutation.data);
   useEffect(() => {
     if (registerMutation.isSuccess && registerMutation.data.status !== 400) {
       // populate store with user data
@@ -146,7 +149,10 @@ function Register() {
           />
         </Row>
         {registerMutation?.data?.status === 400 && (
-          <Row justify="center" css={{ marginTop: "$$sm", display: 'flex', flexFlow:'column' }}>
+          <Row
+            justify="center"
+            css={{ marginTop: "$$sm", display: "flex", flexFlow: "column" }}
+          >
             {registerMutation.data.email && (
               <Text css={{ mt: "$sm" }} color="error">
                 {registerMutation.data.email[0]}
@@ -193,7 +199,7 @@ function Register() {
         )}
       </Button>
       <Text css={{ marginTop: "$sm" }}>
-        Already a user?{" "}
+        Already a user?
         <Link href="/login">
           <Text
             css={{

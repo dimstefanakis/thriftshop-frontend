@@ -56,7 +56,6 @@ function PasswordReset() {
     return error;
   };
 
-  console.log("errors", errors);
   const validatePassword = (values: string) => {
     let error;
     const passwordRegex = /(?=.*[0-9])/;
@@ -91,7 +90,6 @@ function PasswordReset() {
         style={{ margin: "0 10px", maxWidth: 400, width: "100%" }}
         onSubmit={handleSubmit((data) => {
           // do something with the form data
-          console.log("in")
           resetPasswordMutation.mutate({ uid: uid, token: token, ...data });
         })}
       >

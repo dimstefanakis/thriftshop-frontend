@@ -31,7 +31,6 @@ function TwitterCallback() {
 
   useEffect(() => {
     if (twitterTokenMutation.isSuccess) {
-      console.log("twitterTokenMutation", twitterTokenMutation.data);
       loginWithTwitterMutation.mutate({
         accessToken: twitterTokenMutation.data.oauth_token,
         tokenSecret: twitterTokenMutation.data.oauth_token_secret,
@@ -48,11 +47,11 @@ function TwitterCallback() {
     }
   }, [loginWithTwitterMutation.status]);
 
-  useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push("/");
+  //   }
+  // }, [user]);
 
   return (
     <div
