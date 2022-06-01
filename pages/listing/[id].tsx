@@ -19,7 +19,6 @@ function MvpPage() {
   const router = useRouter();
   const { id } = router.query;
   const { status, data, error, refetch } = useGetMvp(id as string);
-  console.log(data);
 
   return (
     <>
@@ -130,6 +129,40 @@ function Mvp({ mvp }: any) {
                   {mvp.validation}
                 </Text>
               </Container>
+            </Container>
+            {mvp.website_url && (
+              <Container
+                css={{
+                  width: "100%",
+                  marginTop: "$xl",
+                  paddingLeft: "0px",
+                }}
+              >
+                <Text h2>Website</Text>
+                <Container css={{ paddingLeft: "0px" }}>
+                  <Link
+                    href="mailto:beta@thriftmvp.com"
+                    target="_blank"
+                    css={{ mx: "$sm", margin: 0 }}
+                  >
+                    {mvp.website_url}
+                  </Link>
+                </Container>
+              </Container>
+            )}
+            <Container
+              css={{
+                width: "100%",
+                marginTop: "$xl",
+                paddingLeft: "0px",
+              }}
+            >
+              <Text h2>
+                Asking Price:{" "}
+                <Text h2 color="primary" css={{ display: "inline" }}>
+                  ${mvp.credit}
+                </Text>
+              </Text>
             </Container>
           </Container>
           <Container

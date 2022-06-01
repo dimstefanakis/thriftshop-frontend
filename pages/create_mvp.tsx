@@ -52,6 +52,9 @@ function CreateMvp() {
       currentMrr: "",
       peakUsers: "",
       currentUsers: "",
+      websiteUrl: "",
+      githubUrl: "",
+      askingPrice: "",
       previewImage: null,
     },
   });
@@ -81,7 +84,8 @@ function CreateMvp() {
       !watch("validation") ||
       !watch("previewImage") ||
       !watch("peakUsers") ||
-      !watch("currentUsers")
+      !watch("currentUsers") ||
+      !watch("askingPrice")
     );
   }
 
@@ -128,6 +132,9 @@ function CreateMvp() {
             currentUsers: data.currentUsers,
             peakMrr: data.peakMrr,
             currentMrr: data.currentMrr,
+            websiteUrl: data.websiteUrl,
+            githubUrl: data.githubUrl,
+            askingPrice: data.askingPrice,
             platforms: selectedPlatforms.map((o) => o.value).join(","),
             services: selectedServices.map((o) => o.value).join(","),
             hostings: selectedHostings.map((o) => o.value).join(","),
@@ -193,6 +200,32 @@ function CreateMvp() {
           <Input
             fullWidth
             clearable
+            label="Website url (optional)"
+            placeholder="e.g. myproject.com"
+            required
+            {...register("websiteUrl")}
+          />
+        </Row>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
+          <Input
+            fullWidth
+            clearable
+            label="Github url (optional)"
+            placeholder="e.g. https://github.com/facebook/react"
+            helperText="Be sure it's a public repo / project. We will be doing a code review to ensure it's clean and well-maintained. We will not be able to review private repos. If you have a private repo, we will contact you soon after your submission."
+            required
+            css={{
+              ".nextui-input-helper-text-container": {
+                bottom: -35,
+              },
+            }}
+            {...register("githubUrl")}
+          />
+        </Row>
+        <Row justify="center" css={{ marginTop: 50 }}>
+          <Input
+            fullWidth
+            clearable
             type="number"
             label="What was your peak user count?"
             placeholder="e.g. 100"
@@ -211,12 +244,22 @@ function CreateMvp() {
             {...register("currentUsers")}
           />
         </Row>
+        <Row justify="center" css={{ marginTop: "$sm" }}>
+          <Input
+            fullWidth
+            clearable
+            type="number"
+            label="How much do you want to sell it for?"
+            placeholder="Specify in USD($)"
+            {...register("askingPrice")}
+          />
+        </Row>
         <Row justify="center" css={{ marginTop: "$xl", flexFlow: "column" }}>
           <Input
             fullWidth
             hidden
             type="file"
-            label="Project validation"
+            label="Preview iamge"
             required
             css={{ height: 18 }}
             ref={(e) => {
@@ -416,7 +459,6 @@ function CreateMvp() {
             {...register("currentMrr")}
           />
         </Row>
-
         <Button
           disabled={isDisabled()}
           type="submit"

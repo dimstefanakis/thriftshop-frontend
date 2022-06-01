@@ -44,21 +44,7 @@ function ListingPage() {
   };
   const isSmall = useMediaQuery("(max-width: 800px)");
 
-  return isSmall ? (
-    <Container
-      display="flex"
-      css={{ marginTop: "100px", width: "fit-content" }}
-      justify="center"
-    >
-      <Text h3 css={{ marginLeft: 0 }}>
-        This page is not yet optimized for small devices :(
-      </Text>
-      <Text h3 css={{ mt: "$sm", marginLeft: 0 }}>
-        We will be with you soon enough promise! Meanwhile please check on your
-        desktop!
-      </Text>
-    </Container>
-  ) : (
+  return (
     <>
       <Container
         display="flex"
@@ -83,49 +69,52 @@ function ListingPage() {
             justifyContent: "center",
           }}
         >
-          <Col css={{ width: "300px" }}>
-            <motion.div
-              variants={loadingAnimationVariants}
-              initial="hidden"
-              animate={isDone ? "show" : "hidden"}
-            >
-              <Filter
-                name="Failure Reason"
-                value="failure_reasons"
-                values={filters.failureReasons}
-              />
-              <Filter
-                name="Cloud Type"
-                value="cloud_types"
-                values={filters.cloudTypes}
-              />
-              <Filter
-                name="Industry"
-                value="industries"
-                values={filters.industries}
-              />
-              <Filter
-                name="Platform"
-                value="platforms"
-                values={filters.platforms}
-              />
-              <Filter
-                name="Service"
-                value="services"
-                values={filters.services}
-              />
-              <Filter
-                name="Hosting"
-                value="hosting"
-                values={filters.hostings}
-              />
-              <Filter
-                name="Tech Stack"
-                value="teck_stack"
-                values={filters.techStacks}
-              />
-            </motion.div>
-          </Col>
+          {!isSmall && (
+            <Col css={{ width: "300px" }}>
+              <motion.div
+                variants={loadingAnimationVariants}
+                initial="hidden"
+                animate={isDone ? "show" : "hidden"}
+              >
+                <Filter
+                  name="Failure Reason"
+                  value="failure_reasons"
+                  values={filters.failureReasons}
+                />
+                <Filter
+                  name="Cloud Type"
+                  value="cloud_types"
+                  values={filters.cloudTypes}
+                />
+                <Filter
+                  name="Industry"
+                  value="industries"
+                  values={filters.industries}
+                />
+                <Filter
+                  name="Platform"
+                  value="platforms"
+                  values={filters.platforms}
+                />
+                <Filter
+                  name="Service"
+                  value="services"
+                  values={filters.services}
+                />
+                <Filter
+                  name="Hosting"
+                  value="hosting"
+                  values={filters.hostings}
+                />
+                <Filter
+                  name="Tech Stack"
+                  value="teck_stack"
+                  values={filters.techStacks}
+                />
+              </motion.div>
+            </Col>
+          )}
+
           <Col css={{ flex: 1 }}>
             <Listing />
           </Col>

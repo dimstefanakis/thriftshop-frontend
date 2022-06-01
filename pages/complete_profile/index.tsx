@@ -18,6 +18,7 @@ import { RootState } from "../../store";
 
 function CompleteProfile() {
   const router = useRouter();
+  const { user } = useSelector((state: RootState) => state.authentication);
   const [interests, setInterests] = useState<string[]>([]);
   const updateProfile = useUpdateProfile();
   const {
@@ -36,6 +37,13 @@ function CompleteProfile() {
       router.push("/listing");
     }
   }, [updateProfile.status]);
+
+  // if (user) {
+  //   if (user.is_buyer || user.is_seller) {
+  //     router.push("/listing");
+  //     return <div></div>;
+  //   }
+  // }
 
   return (
     <Container
