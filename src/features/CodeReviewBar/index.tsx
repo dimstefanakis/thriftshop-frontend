@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Popover, Button, Progress, Container, Text } from "@nextui-org/react";
+import AreYouABuyer from "../../flat/AreYouABuyer";
 import { RootState } from "../../../store";
 
 interface CodeReviewBarProps {
@@ -96,18 +97,20 @@ function CodeReviewBar({ score }: CodeReviewBarProps) {
           </Popover.Content>
         </Popover>
       )}
-      <Text
-        onClick={handleClick}
-        h4
-        css={{
-          marginBottom: "$md",
-          marginLeft: 0,
-          cursor: "pointer",
-          width: "max-content",
-        }}
-      >
-        Code review
-      </Text>
+      {user?.subscription?.status == "active" && (
+        <Text
+          onClick={handleClick}
+          h4
+          css={{
+            marginBottom: "$md",
+            marginLeft: 0,
+            cursor: "pointer",
+            width: "max-content",
+          }}
+        >
+          Code review
+        </Text>
+      )}
 
       {user?.subscription?.status == "active" ? (
         score == 0 ? (
@@ -129,9 +132,9 @@ function CodeReviewBar({ score }: CodeReviewBarProps) {
           />
         )
       ) : (
-        <Button flat css={{ pointerEvents: "none" }}>
-          This feature is only availble to premium users
-        </Button>
+        <Container css={{padding:0, marginBottom: '$xl'}}>
+          <AreYouABuyer buttonText="See Code Review" />
+        </Container>
       )}
     </Container>
   );

@@ -32,14 +32,14 @@ function Footer() {
         <AiFillMail size={30} />
       </Link>
       <Link
-        href="mailto:beta@thriftmvp.com"
+        href="https://join.slack.com/t/thriftmvpworkspace/shared_invite/zt-1a5idwm79-6Cly9N2MJ4GtJf6fTVI_pQ"
         target="_blank"
         css={{ mx: "$sm" }}
       >
         <AiFillSlackCircle size={30} />
       </Link>
       <Link
-        href="mailto:beta@thriftmvp.com"
+        href="https://discord.gg/G43TktQMqU"
         target="_blank"
         css={{ mx: "$sm" }}
       >

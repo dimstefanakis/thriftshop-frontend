@@ -199,7 +199,7 @@ function Register() {
         )}
       </Button>
       <Text css={{ marginTop: "$sm" }}>
-        Already a user?
+        Already a user?{" "}
         <Link href="/login">
           <Text
             css={{

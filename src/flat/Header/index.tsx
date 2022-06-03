@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import {
   Container,
   Image,
@@ -84,6 +85,11 @@ function Header() {
           <div>
             {accessToken && user ? (
               <div style={{ display: "flex", alignItems: "center" }}>
+                <Link href="/find_me_an_mvp">
+                  <Button size="sm" auto css={{ mr: "$xs" }}>
+                    Find Me An MVP
+                  </Button>
+                </Link>
                 <AreYouABuyer />
                 <CreateMvpButton />
                 <Text
