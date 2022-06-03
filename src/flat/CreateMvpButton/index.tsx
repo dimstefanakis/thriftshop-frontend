@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button } from "@nextui-org/react";
 
@@ -8,7 +9,13 @@ function CreateMvpButton() {
     router.push("/create_mvp");
   }
 
-  return <Button auto onClick={onClick} css={{mr: '$lg'}}>Submit MVP</Button>;
+  return (
+    <Link href="/create_mvp">
+      <Button auto size="sm" css={{ mr: "$lg" }}>
+        +
+      </Button>
+    </Link>
+  );
 }
 
 export default CreateMvpButton;

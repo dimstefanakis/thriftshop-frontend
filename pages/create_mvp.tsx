@@ -64,20 +64,20 @@ function CreateMvp() {
   // BIGGER THAN A BUCKET
   function isDisabled() {
     return (
-      !selectedReasons.every((item) => item.value !== "") ||
-      !selectedPlatforms.every((item) => item.value !== "") ||
-      !selectedServices.every((item) => item.value !== "") ||
-      !selectedHostings.every((item) => item.value !== "") ||
-      !selectedCloudTypes.every((item) => item.value !== "") ||
-      !selectedIndustries.every((item) => item.value !== "") ||
-      !selectedTechStacks.every((item) => item.value !== "") ||
-      !selectedReasons.length ||
-      !selectedPlatforms.length ||
-      !selectedServices.length ||
-      !selectedHostings.length ||
-      !selectedCloudTypes.length ||
-      !selectedIndustries.length ||
-      !selectedTechStacks.length ||
+      // !selectedReasons.every((item) => item.value !== "") ||
+      // !selectedPlatforms.every((item) => item.value !== "") ||
+      // !selectedServices.every((item) => item.value !== "") ||
+      // !selectedHostings.every((item) => item.value !== "") ||
+      // !selectedCloudTypes.every((item) => item.value !== "") ||
+      // !selectedIndustries.every((item) => item.value !== "") ||
+      // !selectedTechStacks.every((item) => item.value !== "") ||
+      // !selectedReasons.length ||
+      // !selectedPlatforms.length ||
+      // !selectedServices.length ||
+      // !selectedHostings.length ||
+      // !selectedCloudTypes.length ||
+      // !selectedIndustries.length ||
+      // !selectedTechStacks.length ||
       !watch("name") ||
       !watch("oneLiner") ||
       !watch("description") ||
@@ -135,18 +135,39 @@ function CreateMvp() {
             websiteUrl: data.websiteUrl,
             githubUrl: data.githubUrl,
             askingPrice: data.askingPrice,
-            platforms: selectedPlatforms.map((o) => o.value).join(","),
-            services: selectedServices.map((o) => o.value).join(","),
-            hostings: selectedHostings.map((o) => o.value).join(","),
-            cloudType: selectedCloudTypes.map((o) => o.value).join(","),
-            industries: selectedIndustries.map((o) => o.value).join(","),
-            techStack: selectedTechStacks.map((o) => o.value).join(","),
-            failureReasons: selectedReasons.map((o) => o.value).join(","),
+            platforms: selectedPlatforms
+              .map((o) => o.value)
+              .filter((o) => o)
+              .join(","),
+            services: selectedServices
+              .map((o) => o.value)
+              .filter((o) => o)
+              .join(","),
+            hostings: selectedHostings
+              .filter((o) => o)
+              .map((o) => o.value)
+              .join(","),
+            cloudType: selectedCloudTypes
+              .filter((o) => o)
+              .map((o) => o.value)
+              .join(","),
+            industries: selectedIndustries
+              .filter((o) => o)
+              .map((o) => o.value)
+              .join(","),
+            techStack: selectedTechStacks
+              .filter((o) => o)
+              .map((o) => o.value)
+              .join(","),
+            failureReasons: selectedReasons
+              .filter((o) => o)
+              .map((o) => o.value)
+              .join(","),
           });
         })}
       >
         <Text h2 css={{ textAlign: "center" }}>
-          Create MVP
+          Submit MVP to our listing
         </Text>
         <Row justify="center" css={{ marginTop: "$xl" }}>
           <Input
@@ -202,7 +223,6 @@ function CreateMvp() {
             clearable
             label="Website url (optional)"
             placeholder="e.g. myproject.com"
-            required
             {...register("websiteUrl")}
           />
         </Row>
@@ -213,7 +233,6 @@ function CreateMvp() {
             label="Github url (optional)"
             placeholder="e.g. https://github.com/facebook/react"
             helperText="Be sure it's a public repo / project. We will be doing a code review to ensure it's clean and well-maintained. We will not be able to review private repos. If you have a private repo, we will contact you soon after your submission."
-            required
             css={{
               ".nextui-input-helper-text-container": {
                 bottom: -35,

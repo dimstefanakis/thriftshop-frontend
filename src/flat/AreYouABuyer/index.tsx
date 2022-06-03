@@ -118,6 +118,7 @@ function AreYouABuyer({ buttonText }: AreYouABuyerProps) {
       <Button
         onClick={handler}
         auto
+        size="sm"
         css={{
           marginRight: "$xs",
         }}

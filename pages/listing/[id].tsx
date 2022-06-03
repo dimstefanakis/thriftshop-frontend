@@ -141,7 +141,7 @@ function Mvp({ mvp }: any) {
                 <Text h2>Website</Text>
                 <Container css={{ paddingLeft: "0px" }}>
                   <Link
-                    href="mailto:beta@thriftmvp.com"
+                    href={mvp.website_url}
                     target="_blank"
                     css={{ mx: "$sm", margin: 0 }}
                   >
@@ -173,13 +173,18 @@ function Mvp({ mvp }: any) {
             }}
           >
             <Row css={{ width: "100%" }} justify="center">
-              <Button
-                onClick={onContactClick}
-                size="xl"
-                css={{ marginRight: "20px" }}
+              <Link
+                target="_blank"
+                href={`mailto:${mvp.user_profile.email}?subject=ThriftMVP listing for ${mvp.name}&body=Hey ${mvp.user_profile.name}, I saw your listing on ThriftMVP for ${mvp.name} and I would like to know more!`}
               >
-                Contact seller
-              </Button>
+                <Button
+                  // onClick={onContactClick}
+                  size="xl"
+                  css={{ marginRight: "20px" }}
+                >
+                  Contact seller
+                </Button>
+              </Link>
               {/* <Button size="xl">Get for ${credit}</Button> */}
             </Row>
           </Container>

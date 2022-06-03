@@ -328,7 +328,7 @@ function ListingItem({ mvp, onClick }: any) {
               {mvp.name}
             </Text>
           </Container>
-          <Container css={{ marginBottom: "10px", paddingLeft: "0px" }}>
+          <Container css={{ paddingLeft: "0px" }}>
             <Container
               css={{
                 fontWeight: "500",
@@ -352,7 +352,15 @@ function ListingItem({ mvp, onClick }: any) {
               return <Tag tag={tag} type="cloud" key={i} />;
             })}
           </Container>
-          <Container css={{ margin: "0px 0px", padding: "0px 0px", mt: "$sm" }}>
+          <Container
+            css={{
+              margin: "0px 0px",
+              padding: "0px 0px",
+              mt: "$sm",
+              cursor: "pointer",
+            }}
+            onClick={() => onClick(mvp.id)}
+          >
             <Image
               src={mvp.preview_image}
               css={{ width: "100%", maxW: "100%", objectFit: "contain" }}

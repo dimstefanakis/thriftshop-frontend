@@ -112,7 +112,7 @@ function Login() {
           </Button>
         </Row>
         <Text css={{ marginTop: "$sm", textAlign: 'center' }}>
-          Forgot password?
+          Forgot password?{" "}
           <Link href="/password/forgot">
             <Text
               css={{
