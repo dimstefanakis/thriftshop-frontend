@@ -45,7 +45,10 @@ const Home: NextPage = () => {
           property="og:description"
           content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
         />
-        <meta property="og:image" content="https://www.thriftmvp.com/bg.png" />
+        <meta
+          property="og:image"
+          content="https://www.thriftmvp.com/og_img.png"
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="thriftmvp.com" />
@@ -58,7 +61,10 @@ const Home: NextPage = () => {
           name="twitter:description"
           content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
         />
-        <meta name="twitter:image" content="https://www.thriftmvp.com/bg.png" />
+        <meta
+          name="twitter:image"
+          content="https://www.thriftmvp.com/og_img.png"
+        />
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
