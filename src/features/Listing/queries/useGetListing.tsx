@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 
-function useGetListing() {
+function useGetListing(url:string) {
   const { status, data, error, refetch } = useQuery(
-    "getListing",
+    ["getListing",url],
     () => {
-      return axios(`${process.env.NEXT_PUBLIC_API_URL}/v1/listing/`).then(
+      return axios(url).then(
         (res) => res.data
       );
     },

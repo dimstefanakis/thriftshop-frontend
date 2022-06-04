@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
+let axiosInterceptor = null as any;
 
 interface UserData {
   token?: string | null;
@@ -10,6 +12,7 @@ interface State {
   accessToken?: string | null;
   refreshToken?: string | null;
   user?: any;
+  errors: any[];
   loading: boolean;
   loadingUserData: boolean;
 }
@@ -17,28 +20,55 @@ interface State {
 export const getUserData = createAsyncThunk(
   "authentication/getUserData",
   async () => {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/`
-    );
-    return response.data;
+    let token = localStorage.getItem("accessToken");
+    if (!token) {
+      axios.defaults.headers.common["Authorization"] = "";
+    }
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/`
+      );
+      return response.data;
+    } catch (err) {
+      let error = err as AxiosError;
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+        axios.interceptors.request.eject(axiosInterceptor);
+        axios.defaults.headers.common["Authorization"] = "";
+        return {
+          user: null,
+          token: null,
+        };
+      }
+      return {
+        user: null,
+        token: null,
+      };
+    }
   }
 );
 
 export function setupTokenInterceptor() {
   const token = localStorage.getItem("accessToken");
-  axios.interceptors.request.use(
-    function (config) {
-      // Do something before request is sent
-      if (config.headers && token) {
-        config.headers.authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    function (error) {
-      // Do something with request error
-      return Promise.reject(error);
-    }
-  );
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
+  // axiosInterceptor = axios.interceptors.request.use(
+  //   function (config) {
+  //     // Do something before request is sent
+  //     if (config.headers && token) {
+  //       config.headers.authorization = `Bearer ${token}`;
+  //     }
+  //     return config;
+  //   },
+  //   function (error) {
+  //     // Do something with request error
+  //     return Promise.reject(error);
+  //   }
+  // );
 }
 
 export const authenticationSlice = createSlice({
@@ -47,13 +77,19 @@ export const authenticationSlice = createSlice({
     accessToken: null,
     refreshToken: null,
     user: null,
+    errors: [],
     loading: false,
     loadingUserData: false,
   },
   extraReducers: (builder) => {
     builder.addCase(getUserData.fulfilled, (state, { payload }) => {
-      state.user = payload;
-      state.loadingUserData = false;
+      if (!payload.user) {
+        state.user = null;
+        state.loadingUserData = false;
+      } else {
+        state.user = payload;
+        state.loadingUserData = false;
+      }
     });
     builder.addCase(getUserData.pending, (state, { payload }) => {
       state.loadingUserData = true;
@@ -84,6 +120,17 @@ export const authenticationSlice = createSlice({
     setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
     },
+    logout: (state, action: PayloadAction<undefined>) => {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.user = null;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+      console.log(axios, axiosInterceptor);
+      axios.interceptors.request.eject(axiosInterceptor);
+      axios.defaults.headers.common["Authorization"] = "";
+    },
   },
 });
 
@@ -92,4 +139,5 @@ export const {
   setAccessTokenFromLocalStorage,
   setRefreshToken,
   setUser,
+  logout,
 } = authenticationSlice.actions;

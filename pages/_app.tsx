@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import type { AppProps } from "next/app";
 import { NextUIProvider, createTheme } from "@nextui-org/react";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import Layout from "../src/flat/Layout";
 import { store } from "../store";
@@ -14,6 +16,7 @@ import {
 import { RootState } from "../store";
 import blurr from "../public/blurrBGfilled.png";
 
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 const queryClient = new QueryClient();
 
 const theme = createTheme({
@@ -23,7 +26,7 @@ const theme = createTheme({
       // brand colors
       gradient:
         "linear-gradient(112deg, $blue100 -25%, $pink500 -10%, $purple500 80%)",
-      link: "#5E1DAD",
+      link: "#0070f3",
 
       // you can also create your own color
       myColor: "#ff4ecd",
@@ -51,8 +54,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       dispatch(getUserData());
     }
   }, [accessToken]);
-
-  console.log("user", user);
 
   return (
     <NextUIProvider theme={theme}>

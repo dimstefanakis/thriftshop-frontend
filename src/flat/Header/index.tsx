@@ -1,10 +1,24 @@
 import { useRouter } from "next/router";
-import { Container, Image, Avatar, Text, Button } from "@nextui-org/react";
-import { useSelector } from "react-redux";
+import Link from "next/link";
+import {
+  Container,
+  Image,
+  Avatar,
+  Text,
+  Button,
+  Popover,
+} from "@nextui-org/react";
+import { useSelector, useDispatch } from "react-redux";
+import AreYouABuyer from "../AreYouABuyer";
+import CreateMvpButton from "../CreateMvpButton";
+import { logout } from "../../features/Authentication/slices/authenticationSlice";
 import { RootState } from "../../../store";
 
 function Header() {
-  const { user, accessToken } = useSelector((state: RootState) => state.authentication);
+  const dispatch = useDispatch();
+  const { user, accessToken } = useSelector(
+    (state: RootState) => state.authentication
+  );
   const router = useRouter();
 
   function onHomeClick() {
@@ -13,6 +27,10 @@ function Header() {
 
   function onSignupClick() {
     router.push("/register");
+  }
+
+  function onLogoutClick() {
+    dispatch(logout());
   }
 
   return (
@@ -65,19 +83,45 @@ function Header() {
           />
           <div style={{ flex: 1 }}></div>
           <div>
-            {accessToken && user && (
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <Text css={{
-                  fontSize: '$3',
-                  fontWeight: 'bold',
-                  marginRight: '$5'
-                }}>{user.name}</Text>
-                <Avatar src={user.twitter_avatar}/>
+            {accessToken && user ? (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Link href="/find_me_an_mvp">
+                  <Button size="sm" auto css={{ mr: "$xs" }}>
+                    Find Me An MVP
+                  </Button>
+                </Link>
+                <AreYouABuyer />
+                <CreateMvpButton />
+                <Text
+                  css={{
+                    fontSize: "$3",
+                    fontWeight: "bold",
+                    marginRight: "$xs",
+                  }}
+                >
+                  {user.name}
+                </Text>
+                <Popover triggerType="menu">
+                  <Popover.Trigger>
+                    <Avatar
+                      css={{ cursor: "pointer" }}
+                      src={user.avatar || user.twitter_avatar}
+                    />
+                  </Popover.Trigger>
+                  <Popover.Content>
+                    <Button.Group vertical>
+                      <Button color="error" onClick={onLogoutClick}>
+                        Logout
+                      </Button>
+                    </Button.Group>
+                  </Popover.Content>
+                </Popover>
               </div>
+            ) : (
+              <Button shadow auto onClick={onSignupClick}>
+                Sign up
+              </Button>
             )}
-            {/* <Button shadow auto onClick={onSignupClick}>
-              Sign up
-            </Button> */}
           </div>
         </Container>
       </Container>

@@ -1,12 +1,27 @@
-import { Container, Col, Row, Text, Image, Link } from "@nextui-org/react";
+import { useRouter } from "next/router";
+import {
+  Container,
+  Col,
+  Row,
+  Button,
+  Text,
+  Image,
+  Link,
+} from "@nextui-org/react";
 import Header from "../Header";
 import SubscribeToNewsletter from "../../features/SubscribeToNewsletter";
+import Footer from "../Footer";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { ParagraphProps } from "./interface";
 
 function Landing() {
+  const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 480px)");
   const isTablet = useMediaQuery("(max-width: 960px)");
+
+  function onListingClick() {
+    router.push("/listing");
+  }
 
   return (
     <>
@@ -41,6 +56,7 @@ function Landing() {
             <Container
               css={{
                 display: "flex",
+                flexFlow: "column",
                 paddingTop: 120,
                 paddingLeft: "$9",
                 paddingRight: "$9",
@@ -85,7 +101,17 @@ function Landing() {
                   MVPs
                 </Text>
               </Text>
-              <SubscribeToNewsletter />
+              <Button
+                auto
+                onClick={onListingClick}
+                css={{
+                  mt: "$xl",
+                  maxW: 200,
+                }}
+              >
+                View Listing
+              </Button>
+              {/* {!isMobile && !isTablet && <SubscribeToNewsletter />} */}
             </Container>
           </Col>
           <Col css={{ width: "60%" }} />
@@ -98,9 +124,21 @@ function Landing() {
           containerCss={{ position: "absolute", top: 0, left: 0 }}
         />
       </div>
-
       <Story />
       <Vision />
+      {/* {isMobile || isTablet ? (
+        <Container
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 100,
+            width: "100%",
+          }}
+        >
+          <SubscribeToNewsletter />
+        </Container>
+      ) : null} */}
+      <Footer />
     </>
   );
 }
@@ -150,11 +188,18 @@ function Story() {
 }
 
 function Vision() {
+  const isMobile = useMediaQuery("(max-width: 480px)");
+  const isTablet = useMediaQuery("(max-width: 960px)");
+
   return (
     <Container
       alignItems="center"
       justify="center"
-      css={{ marginTop: "200px", display: "flex", paddingBottom: "100px" }}
+      css={{
+        marginTop: isTablet ? "100px" : "200px",
+        display: "flex",
+        paddingBottom: "100px",
+      }}
     >
       <Container display="flex">
         <SectionTitle>The vision</SectionTitle>
