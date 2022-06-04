@@ -35,6 +35,37 @@ const Home: NextPage = () => {
           name="description"
           content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
         />
+        <meta property="og:url" content="https://www.thriftmvp.com/" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="ThriftMVP - Buy early revenue high quality MVPs"
+        />
+        <meta
+          property="og:description"
+          content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
+        />
+        <meta
+          property="og:image"
+          content="https://www.thriftmvp.com/og_img.png"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="thriftmvp.com" />
+        <meta property="twitter:url" content="https://www.thriftmvp.com/" />
+        <meta
+          name="twitter:title"
+          content="ThriftMVP - Buy early revenue high quality MVPs"
+        />
+        <meta
+          name="twitter:description"
+          content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.thriftmvp.com/og_img.png"
+        />
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Landing />
