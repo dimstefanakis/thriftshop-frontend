@@ -324,7 +324,7 @@ function CreateMvp() {
         </Row> */}
         <Row justify="center" css={{ marginTop: "$xl" }}>
           <SelectMultiple
-            label="Failure reasons"
+            label="Stop reasons"
             selectedOptions={selectedReasons}
             onChange={(values: any) => setSelectedReasons(values)}
             options={[

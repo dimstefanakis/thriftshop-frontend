@@ -1,3 +1,4 @@
+import Head from "next/head";
 import {
   Container,
   Col,
@@ -40,6 +41,10 @@ function Mvp({ mvp }: any) {
   }
   return (
     <>
+      <Head>
+        <title>ThriftMVP - {mvp.name}</title>
+        <meta name="description" content={mvp.description} />
+      </Head>
       <Container display="flex" justify="center">
         <Container
           key={mvp.id}
