@@ -278,7 +278,7 @@ function CreateMvp() {
             fullWidth
             hidden
             type="file"
-            label="Preview iamge"
+            label="Preview image"
             required
             css={{ height: 18 }}
             ref={(e) => {
