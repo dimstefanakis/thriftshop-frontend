@@ -115,7 +115,7 @@ function ListingPage() {
                 animate={isDone ? "show" : "hidden"}
               >
                 <Filter
-                  name="Stop Reason"
+                  name="Selling Reason"
                   value="failure_reasons"
                   values={filters.failureReasons}
                 />
