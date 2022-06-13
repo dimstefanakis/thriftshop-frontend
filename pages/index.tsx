@@ -30,10 +30,10 @@ const Home: NextPage = () => {
       }}
     >
       <Head>
-        <title>ThriftMVP - Buy early revenue high quality MVPs</title>
+        <title>ThriftMVP - Buy pre / early revenue high quality MVPs</title>
         <meta
           name="description"
-          content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
+          content="Buy and sell high quality pre / early revenue startups and MVPs."
         />
         <meta property="og:url" content="https://www.thriftmvp.com/" />
         <meta property="og:type" content="website" />
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
         />
         <meta
           property="og:description"
-          content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
+          content="Buy and sell high quality pre / early revenue startups and MVPs."
         />
         <meta
           property="og:image"
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
         />
         <meta
           name="twitter:description"
-          content="About 90% of startups fail. What about projects that never kicked off, the project that a developer started sometime somewhere but never put on display? They all currently live on github graveyards. Does that mean they should stay on graveyards? No."
+          content="Buy and sell high quality pre / early revenue startups and MVPs."
         />
         <meta
           name="twitter:image"
