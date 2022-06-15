@@ -305,7 +305,7 @@ function Listing() {
 
   return (
     <>
-      <Container css={{ marginBottom: "50px", marginLeft: "0px" }}>
+      <Container css={{ marginBottom: "50px", marginLeft: "0px", padding: 0 }}>
         {!data && status === "loading" && (
           <Container
             css={{
@@ -355,8 +355,10 @@ function ListingItem({ mvp, onClick }: any) {
               h1
               css={{
                 cursor: "pointer",
-                width: "max-content",
+                width: "100%",
+                wordBreak: 'break-word',
                 ml: 0,
+                padding: 0,
                 "&:hover": {
                   textDecoration: "underline",
                 },
@@ -366,16 +368,16 @@ function ListingItem({ mvp, onClick }: any) {
               {mvp.name}
             </Text>
           </Container>
-          <Container css={{ paddingLeft: "0px" }}>
+          <Container css={{ padding: 0 }}>
             <Container
               css={{
                 fontWeight: "500",
                 fontSize: 20,
                 lineHeight: "30px",
-                paddingLeft: "0px",
+                padding: 0
               }}
             >
-              <Text h4>{mvp.one_liner}</Text>
+              <Text h4 css={{padding: 0}}>{mvp.one_liner}</Text>
             </Container>
           </Container>
           <CodeReviewBar score={mvp.code_score} />

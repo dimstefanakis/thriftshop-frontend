@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import CodeReviewBar from "../../src/features/CodeReviewBar";
 import Tag from "../../src/flat/Tag";
 import useGetMvp from "../../src/features/Listing/queries/useGetMvp";
+import useMediaQuery from "../../src/hooks/useMediaQuery";
 import { TagInterface } from "../../src/flat/Tag/interface";
 
 function MvpPage() {
@@ -31,6 +32,8 @@ function MvpPage() {
 }
 
 function Mvp({ mvp }: any) {
+  const isSmall = useMediaQuery("(max-width: 800px)");
+
   function onContactClick() {
     if (window) {
       window.open(
@@ -45,27 +48,30 @@ function Mvp({ mvp }: any) {
         <title>ThriftMVP - {mvp.name}</title>
         <meta name="description" content={mvp.description} />
       </Head>
-      <Container display="flex" justify="center">
+      <Container display="flex" justify="center" css={{ padding: 0 }}>
         <Container
           key={mvp.id}
           css={{
             marginTop: "100px",
             maxW: "800px",
+            padding: 0,
           }}
         >
-          <Container css={{ marginTop: "30px" }}>
+          <Container css={{ marginTop: "30px", padding: 0 }}>
             <Container
               css={{
                 fontWeight: "600",
                 fontSize: 30,
                 marginLeft: "0px",
-                paddingLeft: "0px",
+                padding: 0,
               }}
             >
               <Text h1>{mvp.name}</Text>
             </Container>
           </Container>
-          <Container css={{ marginLeft: "0px", marginBottom: "10px" }}>
+          <Container
+            css={{ marginLeft: "0px", marginBottom: "10px", padding: 0 }}
+          >
             <Container
               css={{
                 fontWeight: "500",
@@ -104,10 +110,10 @@ function Mvp({ mvp }: any) {
               })}
             </Container>
             <Container
-              css={{ width: "100%", marginTop: "$xl", paddingLeft: "0px" }}
+              css={{ width: "100%", marginTop: "$xl", padding: 0 }}
             >
               <Text h2>Description</Text>
-              <Container css={{ padding: "0px 0px" }}>
+              <Container css={{ padding: 0 }}>
                 <Text
                   css={{
                     lineHeight: "$sm",
@@ -121,11 +127,11 @@ function Mvp({ mvp }: any) {
               css={{
                 width: "100%",
                 marginTop: "$xl",
-                paddingLeft: "0px",
+                padding: 0,
               }}
             >
               <Text h2>Validation</Text>
-              <Container css={{ paddingLeft: "0px" }}>
+              <Container css={{ padding: 0 }}>
                 <Text
                   css={{
                     lineHeight: "$sm",
@@ -184,8 +190,7 @@ function Mvp({ mvp }: any) {
               >
                 <Button
                   // onClick={onContactClick}
-                  size="xl"
-                  css={{ marginRight: "20px" }}
+                  size={isSmall ? "md" : "xl"}
                 >
                   Contact seller
                 </Button>
