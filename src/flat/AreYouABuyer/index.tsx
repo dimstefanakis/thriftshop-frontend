@@ -314,7 +314,7 @@ function Benefits({ isAlreadySubscribed }: { isAlreadySubscribed: boolean }) {
               <Text b i>
                 Find me an MVP.
               </Text>{" "}
-              Request an MVP and we will help you find one that isn&quot;t on
+              Request an MVP and we will help you find one that isn&apos;t on
               our listing
             </Text>
           </li>
