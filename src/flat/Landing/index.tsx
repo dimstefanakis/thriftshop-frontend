@@ -10,7 +10,11 @@ import {
 } from "@nextui-org/react";
 import Header from "../Header";
 import SubscribeToNewsletter from "../../features/SubscribeToNewsletter";
+import TraditionalEntrepreneurship from "./TraditionalEntrepreneurship";
+import EntrepreneurshipThroughMVP from "./EntrepreneurshipThroughMVP";
+import ComparisonTable from "../ComparisonTable";
 import Footer from "../Footer";
+import PointBox from "../PointBox";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { ParagraphProps } from "./interface";
 
@@ -83,7 +87,7 @@ function Landing() {
                   },
                 }}
               >
-                Buy early-revenue high quality{" "}
+                Buy pre-revenue high quality{" "}
                 <Text
                   color="#2A21E5"
                   span
@@ -126,6 +130,18 @@ function Landing() {
       </div>
       <Story />
       <Vision />
+      <TraditionalEntrepreneurship />
+      <EntrepreneurshipThroughMVP />
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <SectionTitle>How we compare</SectionTitle>
+        <ComparisonTable />
+      </Container>
       {/* {isMobile || isTablet ? (
         <Container
           css={{
@@ -157,7 +173,7 @@ function Story() {
       <div>
         <SectionTitle>The story</SectionTitle>
       </div>
-      <div style={{ marginTop: "50px", maxWidth: "800px" }}>
+      <div style={{ marginTop: "30px", maxWidth: "800px" }}>
         <ParagraphContainer>
           About 90% of startups fail. What about projects that never kicked off,
           the project that a developer started sometime somewhere but never put
@@ -196,16 +212,37 @@ function Vision() {
       alignItems="center"
       justify="center"
       css={{
-        marginTop: isTablet ? "100px" : "200px",
+        marginTop: isTablet ? "50px" : "100px",
         display: "flex",
         paddingBottom: "100px",
       }}
     >
       <Container display="flex">
-        <SectionTitle>The vision</SectionTitle>
+        <SectionTitle>Our mission</SectionTitle>
       </Container>
-      <Container css={{ marginTop: "50px", maxWidth: "800px", padding: 0 }}>
-        <ParagraphContainer>
+      <Container css={{ marginTop: "30px", maxWidth: "800px", padding: 0 }}>
+        <Container css={{ padding: 0, display: "flex", flexFlow: "row wrap" }}>
+          <PointBox>
+            <Text b css={{ fontSize: "$md" }}>
+              Encourage entrepreneurship through adoption and reduce the amount
+              of startup clutter out there.
+            </Text>
+          </PointBox>
+          <PointBox>
+            <Text b css={{ fontSize: "$md" }}>
+              Reward founders despite their outcomes. people pursuing
+              entrepreneurship should be able to make a living without having to
+              necessarily &quot;succeed&quot;.
+            </Text>
+          </PointBox>
+          <PointBox>
+            <Text b css={{ fontSize: "$md" }}>
+              Make the startup space an overall healthier place to jump into and
+              reduce the risk just a <Text i>tad</Text> bit.{" "}
+            </Text>
+          </PointBox>
+        </Container>
+        {/* <ParagraphContainer>
           What does that leave us with?{" "}
           <Text i>
             The rest 90% of startups with the potential to bloom through simple
@@ -219,7 +256,10 @@ function Vision() {
         <ParagraphContainer>
           Our vision is to help business founders find low cost opportunities,
           high quality MVPs with unicorn potential.
-        </ParagraphContainer>
+        </ParagraphContainer> */}
+        {/* <ParagraphContainer>
+          <Text b>TLDR</Text> We want to help founders roll more dice.
+        </ParagraphContainer> */}
       </Container>
     </Container>
   );

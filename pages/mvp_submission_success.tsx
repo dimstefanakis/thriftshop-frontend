@@ -21,7 +21,7 @@ function MvpSubmissionSuccess() {
     >
       <Text h1>Your MVP submission has been received.</Text>
       <Text h4>Within the next 7 days we will review your MVP and get back to you!</Text>
-      <Card cover css={{ maxW: 500, mt: "$xl" }}>
+      <Card css={{ maxW: 500, mt: "$xl" }}>
         <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
           <Col>
             <Text
