@@ -51,7 +51,7 @@ function Checkout() {
       {redirect_status === "requires_payment_method" && (
         <Text h2>Payment failed. Please try another payment method.</Text>
       )}
-      <Card cover css={{ maxW: 500, mt: "$xl" }}>
+      <Card css={{ maxW: 500, mt: "$xl" }}>
         <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
           <Col>
             <Text

@@ -226,7 +226,7 @@ function FilterValues({ values, value }: { values: any[]; value: string }) {
             }}
           >
             <Checkbox
-              checked={
+              isSelected={
                 !!checkedFilters.find(
                   (filter) =>
                     filter.id === value.id && filter.name === value.name
@@ -305,7 +305,7 @@ function Listing() {
 
   return (
     <>
-      <Container css={{ marginBottom: "50px", marginLeft: "0px", padding: 0 }}>
+      <Container css={{ marginBottom: "30px", marginLeft: "0px", padding: 0 }}>
         {!data && status === "loading" && (
           <Container
             css={{

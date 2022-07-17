@@ -79,7 +79,7 @@ function CompleteProfile() {
         })}
       >
         <Row justify="center" css={{ marginTop: "$xl", marginBottom: 100 }}>
-          <Checkbox.Group row onChange={setInterests}>
+          <Checkbox.Group orientation="horizontal" onChange={setInterests}>
             <Checkbox value="buying" color="primary">
               Buying
             </Checkbox>

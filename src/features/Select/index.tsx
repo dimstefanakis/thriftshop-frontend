@@ -90,7 +90,7 @@ export function SelectMultiple({
         {label}
       </Text>
       <Checkbox.Group
-        row
+        orientation="horizontal"
         css={{
           'div[role="presentation"]': {
             flexWrap: "wrap",
