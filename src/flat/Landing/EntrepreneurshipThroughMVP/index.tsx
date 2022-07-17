@@ -41,7 +41,7 @@ function EntrepreneurshipThroughMVP() {
         Think of idea
       </Text>
       <ArrowDown />
-      <Text h4 css={{ mb: 0 }} color="$primary">
+      <Text h4 css={{ mb: 0, textAlign: 'center' }} color="$primary">
         Buy an MVP. Save dev time and costs
       </Text>
       <ArrowDown />

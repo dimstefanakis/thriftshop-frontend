@@ -288,7 +288,7 @@ function SectionTitle({ children }: { children: string }) {
         "@md": {
           fontSize: 70,
         },
-
+        textAlign: 'center',
         fontWeight: "bold",
       }}
     >

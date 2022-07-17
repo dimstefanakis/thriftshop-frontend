@@ -32,7 +32,7 @@ function TraditionalEntrepreneurship() {
         Validate the idea
       </Text>
       <ArrowDown />
-      <Text h4 css={{ mb: 0 }}>
+      <Text h4 css={{ mb: 0, textAlign: 'center' }}>
         Spend time and money to build an MVP
       </Text>
       <ArrowDown />
