@@ -11,6 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import AreYouABuyer from "../AreYouABuyer";
 import CreateMvpButton from "../CreateMvpButton";
+import BookACall from "../BookACall";
 import { logout } from "../../features/Authentication/slices/authenticationSlice";
 import { RootState } from "../../../store";
 
@@ -118,9 +119,12 @@ function Header() {
                 </Popover>
               </div>
             ) : (
-              <Button shadow auto onClick={onSignupClick}>
-                Sign up
-              </Button>
+              <div style={{display: 'flex'}}>
+                <BookACall />
+                <Button shadow auto onClick={onSignupClick}>
+                  Sign up
+                </Button>
+              </div>
             )}
           </div>
         </Container>
