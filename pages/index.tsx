@@ -30,7 +30,7 @@ const Home: NextPage = () => {
       }}
     >
       <Head>
-        <title>ThriftMVP - Buy pre / early revenue high quality MVPs</title>
+        <title>ThriftMVP - Buy and sell pre / early revenue high quality MVPs</title>
         <meta
           name="description"
           content="Buy and sell high quality pre / early revenue startups and MVPs."

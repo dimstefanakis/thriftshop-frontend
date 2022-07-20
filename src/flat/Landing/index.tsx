@@ -87,7 +87,7 @@ function Landing() {
                   },
                 }}
               >
-                Buy pre-revenue high quality{" "}
+                Buy and sell pre-revenue high quality{" "}
                 <Text
                   color="#2A21E5"
                   span
