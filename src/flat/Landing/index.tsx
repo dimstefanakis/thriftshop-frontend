@@ -102,7 +102,7 @@ function Landing() {
                     },
                   }}
                 >
-                  MVPs
+                  startups
                 </Text>
               </Text>
               <Button
