@@ -32,7 +32,7 @@ const data = {
   },
   tinyacquisitions: {
     name: "Tiny Acquisitions",
-    pricing: "Premium subscription for buyers starting at $149 bi-annally",
+    pricing: "Premium subscription for buyers starting at $149 bi-annually",
     listing: "Flexible",
     contactSellers: "Premium",
     submitYourStartup: "Free",
